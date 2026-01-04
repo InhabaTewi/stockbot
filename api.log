@@ -1,0 +1,650 @@
+nohup: ignoring input
+INFO:     Started server process [700860]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60094 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60104 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60096 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60108 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60116 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60118 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60130 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60132 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60144 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60146 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60166 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60168 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60188 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60186 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60206 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60208 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60228 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60230 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60248 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60250 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60270 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60268 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60296 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60294 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60316 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60318 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60336 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60338 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60358 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60360 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60376 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60378 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60400 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60398 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60420 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60422 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60440 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60442 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60460 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60462 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60482 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60484 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     127.0.0.1:60510 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60508 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60528 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60530 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60552 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60550 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60570 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60572 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60590 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60592 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60612 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60614 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60636 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60634 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60654 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60656 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60674 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60676 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60704 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60706 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60724 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60726 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60744 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60746 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     127.0.0.1:60766 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60768 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60786 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60788 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     204.76.203.93:59188 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60810 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60808 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60830 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60832 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60850 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60852 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60870 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60868 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60890 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60892 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60912 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60910 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60936 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60934 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60960 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60958 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60980 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60982 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32768 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32770 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32790 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32792 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32810 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32812 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32832 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32830 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32852 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32854 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32872 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32874 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32894 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32892 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32920 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32922 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32940 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32942 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32962 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32960 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32982 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32984 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33002 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33004 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33022 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33024 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33046 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33044 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33068 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33066 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33086 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33088 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33108 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33110 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33136 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33134 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33160 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33162 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33190 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33188 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33214 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33216 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33240 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33238 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33262 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33260 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33280 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33282 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33300 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33302 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33324 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33322 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33354 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33356 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33378 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33376 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33402 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33404 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33422 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33424 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     204.76.203.50:55770 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33442 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33444 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     205.210.31.129:64122 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33464 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33466 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33486 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33484 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33504 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33506 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33526 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33528 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33546 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33548 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33566 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33568 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33592 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33594 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33618 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33620 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33646 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33644 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33688 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33686 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33706 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33708 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33726 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33728 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33748 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33750 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33770 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33768 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33788 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33790 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33810 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33812 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33830 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33832 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33852 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33850 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33872 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33874 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33892 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33894 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33916 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33918 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33940 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33938 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33958 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33960 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33978 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33980 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34002 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34000 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34020 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34022 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34044 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34046 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34068 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34070 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34090 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34092 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34110 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34112 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34132 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34134 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34152 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34154 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34174 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34172 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34194 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34196 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34214 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34216 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34234 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34236 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34260 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34262 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34280 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34282 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34300 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34302 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34322 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34324 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34344 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34346 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34366 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34388 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34386 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34406 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34408 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34426 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34428 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34448 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34450 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34470 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34468 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34488 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34490 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     127.0.0.1:34510 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34512 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34530 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34532 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34556 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34554 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34576 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34578 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     206.168.34.116:35966 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     127.0.0.1:34598 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34596 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     206.168.34.116:60986 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:34616 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34618 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34638 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34640 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34670 - "GET /api/search?q=%E5%B0%8F%E7%B1%B3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34674 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34672 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34690 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34700 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34698 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34710 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34712 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34728 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34730 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34746 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34748 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34760 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34762 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34784 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34786 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34808 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34810 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34830 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34832 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34860 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34858 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34884 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34886 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34910 - "GET /api/search?q=%E5%B0%8F%E7%B1%B3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34920 - "GET /api/search?q=%E5%B0%8F%E7%B1%B3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34902 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34914 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34904 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34912 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34934 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34944 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34940 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34954 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34950 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34970 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34962 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34966 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34978 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34988 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34986 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35004 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35006 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35030 - "GET /api/search?q=%E5%B0%8F%E7%B1%B3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35040 - "GET /api/search?q=%E5%B0%8F%E7%B1%B3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35032 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35018 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35020 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35048 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35052 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35056 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35068 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35062 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35076 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35078 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35088 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35092 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35102 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35104 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35116 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35114 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35134 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35132 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35148 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35146 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35176 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35174 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35194 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35196 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35204 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35208 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35220 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35218 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35236 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35232 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35244 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35252 - "GET /api/kline?symbol=1810.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35258 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35256 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35272 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35274 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35286 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35288 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35302 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35314 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35312 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35326 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35328 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35348 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35346 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35372 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35370 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35392 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35394 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35416 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35414 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35438 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35440 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35462 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35460 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35484 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35482 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35506 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35508 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35530 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35528 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35554 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35556 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35582 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35580 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35612 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35610 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35642 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35640 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35674 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35672 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35696 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35694 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35750 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35748 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35812 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35810 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35856 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35854 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35872 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35870 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35950 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35948 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36054 - "GET /api/summary?symbol=1810.HK HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36056 - "GET /api/summary?symbol=81810.HK HTTP/1.1" 200 OK
+INFO:     204.76.203.50:41538 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     198.235.24.82:60554 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.93:44798 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     3.134.148.59:44676 - "GET / HTTP/1.1" 200 OK
+INFO:     3.134.148.59:53334 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     113.141.82.177:45938 - "GET / HTTP/1.1" 200 OK
+INFO:     113.141.82.177:45956 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.50:48466 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     162.243.78.103:42130 - "GET /.env HTTP/1.1" 404 Not Found
+INFO:     162.243.78.103:42132 - "GET /.git/config HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     64.227.33.88:38804 - "GET / HTTP/1.1" 200 OK
+INFO:     64.227.33.88:38820 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     205.210.31.230:60686 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.50:51348 - "GET / HTTP/1.1" 200 OK
+INFO:     103.203.57.20:35144 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.93:42542 - "GET /ip HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Unsupported upgrade request.
+INFO:     39.100.71.117:38724 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.202:37454 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.202:37460 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.202:37476 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+INFO:     204.76.203.50:39804 - "GET / HTTP/1.1" 200 OK
+INFO:     147.185.132.15:60004 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.93:36232 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     204.76.203.50:53178 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     91.230.168.12:49299 - "GET / HTTP/1.1" 200 OK
+INFO:     91.230.168.22:42201 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     89.248.164.165:41148 - "GET /images/js/eas/eas.js HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     178.128.155.184:48384 - "GET / HTTP/1.1" 200 OK
+INFO:     178.128.155.184:48390 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     204.76.203.50:34754 - "GET / HTTP/1.1" 200 OK
+INFO:     205.210.31.153:61066 - "GET / HTTP/1.1" 200 OK
+INFO:      - "GET /ip.php HTTP/1.1" 404 Not Found
+INFO:     172.96.14.110:51622 - "GET /ip.php HTTP/1.1" 404 Not Found
+INFO:     78.153.151.35:57038 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.93:46220 - "GET /ip HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.126:54384 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.126:34476 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+INFO:     204.76.203.50:54580 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     65.49.1.222:32560 - "GET / HTTP/1.1" 200 OK
+INFO:     65.49.1.226:61209 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     65.49.1.223:37491 - "GET /?format=json HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     59.82.135.200:38637 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.50:60070 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     3.149.59.26:46662 - "GET / HTTP/1.1" 200 OK
+INFO:     3.149.59.26:46652 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     162.243.20.124:60580 - "GET / HTTP/1.1" 200 OK
+INFO:     162.243.20.124:60584 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     59.82.135.140:16771 - "GET / HTTP/1.1" 200 OK
+INFO:     45.194.92.43:46514 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     204.76.203.93:58314 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     101.37.118.183:54224 - "GET / HTTP/1.1" 200 OK
+INFO:     101.37.118.183:54236 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     198.235.24.154:65002 - "GET / HTTP/1.1" 200 OK
+INFO:     89.248.164.165:33210 - "GET /images/js/eas/eas.js HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.120:51942 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.120:51964 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.120:40650 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     204.76.203.93:41340 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     44.220.188.66:32956 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     134.122.16.15:40026 - "GET /.env HTTP/1.1" 404 Not Found
+INFO:     134.122.16.15:40040 - "GET /.git/config HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.93:50926 - "GET /ip HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.50:52966 - "GET / HTTP/1.1" 200 OK
+INFO:     20.65.193.1:48806 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     89.248.164.165:52402 - "GET /images/js/eas/eas.js HTTP/1.1" 404 Not Found
+INFO:     205.210.31.154:59330 - "GET / HTTP/1.1" 200 OK
+INFO:     142.93.230.252:51190 - "POST /api/client/update?arch=amd64&commit=08059e95dacafe0bf6e5782f8e2c8ec9cd8c5a17&os=windows HTTP/1.1" 404 Not Found
+INFO:     65.49.1.108:39816 - "GET / HTTP/1.1" 200 OK
+INFO:     65.49.1.108:54787 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     65.49.1.121:19931 - "GET /?format=json HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.50:32830 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.114:24466 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.114:24516 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.114:42326 - "GET /sitemap.xml HTTP/1.1" 404 Not Found
+INFO:     3.149.59.26:50614 - "GET / HTTP/1.1" 200 OK
+INFO:     3.149.59.26:47476 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.50:34442 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     162.243.90.53:41092 - "GET / HTTP/1.1" 200 OK
+INFO:     162.243.90.53:45862 - "GET /login HTTP/1.1" 404 Not Found
+INFO:     194.87.216.50:33140 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     192.159.99.113:37846 - "GET /../../../../../../etc/passwd HTTP/1.1" 404 Not Found
+INFO:     167.94.146.60:11804 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.146.60:2528 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.146.60:2568 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.146.60:22206 - "GET /wiki HTTP/1.1" 404 Not Found
+INFO:     223.199.190.240:64863 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     89.248.164.165:44182 - "GET /images/js/eas/eas.js HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET / HTTP/1.1" 200 OK
+INFO:     47.102.184.31:30606 - "GET /explicit_not_exist_path HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /admin/ HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /logo.png HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /cwbase/ HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /cwbase/weblogin/index.aspx HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /images/ofbiz.ico HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /nacos/ HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /nacos/css/main.css HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /weboffice/ HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /v2/logging HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /messages/ HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /phpMyAdmin/ HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /phpmyadmin/ HTTP/1.1" 404 Not Found
+INFO:     47.102.184.31:30606 - "GET /wcm/ HTTP/1.1" 404 Not Found
+INFO:     204.76.203.50:46414 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.215:20118 - "GET /../../../../../../etc/passwd HTTP/1.1" 404 Not Found
+INFO:     204.76.203.93:34044 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     205.210.31.196:57738 - "GET / HTTP/1.1" 200 OK
+INFO:     185.247.137.164:34867 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.50:47726 - "GET / HTTP/1.1" 200 OK
+INFO:     198.235.24.152:61888 - "GET / HTTP/1.1" 200 OK
+INFO:     147.185.132.66:63392 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.50:44642 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.93:58920 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     89.248.164.165:44382 - "GET /images/js/eas/eas.js HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.18:59202 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     66.132.153.118:38748 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     66.132.153.118:38764 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     66.132.153.118:37870 - "GET /wiki HTTP/1.1" 404 Not Found
+INFO:     204.76.203.18:37998 - "GET /bins/ HTTP/1.1" 404 Not Found
+INFO:     204.76.203.18:51130 - "GET /bin/ HTTP/1.1" 404 Not Found
+INFO:     172.104.11.46:40954 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.18:50948 - "GET /backup/ HTTP/1.1" 404 Not Found
+INFO:     204.76.203.50:43944 - "GET / HTTP/1.1" 200 OK
+INFO:     65.49.1.202:53538 - "GET / HTTP/1.1" 200 OK
+INFO:     65.49.1.208:36829 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     65.49.1.210:33511 - "GET /?format=json HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.51:37508 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.50:49546 - "GET / HTTP/1.1" 200 OK
+INFO:     207.154.206.14:36872 - "GET /.env HTTP/1.1" 404 Not Found
+INFO:     207.154.206.14:36884 - "GET /.git/config HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     64.23.148.252:51552 - "GET / HTTP/1.1" 200 OK
+INFO:     64.23.148.252:51562 - "GET /login HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     147.185.132.192:61702 - "GET / HTTP/1.1" 200 OK
+INFO:     60.191.125.35:49152 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     204.76.203.51:54952 - "GET / HTTP/1.1" 200 OK
+INFO:     204.76.203.93:42552 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     204.76.203.50:54210 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.177:7718 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.177:7754 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     167.94.138.177:20022 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+INFO:     204.76.203.93:53460 - "GET /ip HTTP/1.1" 404 Not Found
+INFO:     85.159.229.96:34752 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     205.210.31.76:64674 - "GET / HTTP/1.1" 200 OK
+INFO:     199.45.155.65:60970 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     199.45.155.65:36972 - "GET / HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+INFO:     199.45.155.65:48670 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+WARNING:  Invalid HTTP request received.
+INFO:     199.45.155.65:48762 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [700860]

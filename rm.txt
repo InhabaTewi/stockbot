@@ -1,0 +1,5 @@
+nohup uvicorn server.main:app --host 0.0.0.0 --port 8000 > api.log 2>&1 &
+
+ps -ef | grep uvicorn   关闭后台服务
+ps -ef | grep vite
+kill （PID）

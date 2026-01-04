@@ -1,0 +1,12 @@
+pyproject.toml
+stock_sdk/__init__.py
+stock_sdk/client.py
+stock_sdk/config.py
+stock_sdk/errors.py
+stock_sdk/http.py
+stock_sdk.egg-info/PKG-INFO
+stock_sdk.egg-info/SOURCES.txt
+stock_sdk.egg-info/dependency_links.txt
+stock_sdk.egg-info/requires.txt
+stock_sdk.egg-info/top_level.txt
+stock_sdk/providers/yahoo_chart.py

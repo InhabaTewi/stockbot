@@ -1,0 +1,212 @@
+nohup: ignoring input
+INFO:     Started server process [439747]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     222.128.117.177:3290 - "GET /docs HTTP/1.1" 200 OK
+INFO:     222.128.117.177:3290 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     222.128.117.177:11188 - "GET /docs HTTP/1.1" 200 OK
+INFO:     222.128.117.177:11188 - "GET /openapi.json HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     222.128.117.177:5521 - "GET /docs HTTP/1.1" 200 OK
+INFO:     222.128.117.177:5521 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     59.82.83.176:19474 - "GET / HTTP/1.1" 404 Not Found
+INFO:     147.182.152.26:47500 - "GET / HTTP/1.1" 404 Not Found
+INFO:     147.182.152.26:47514 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     222.128.117.177:38530 - "GET /docs HTTP/1.1" 200 OK
+INFO:     222.128.117.177:38530 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     222.128.117.177:38530 - "GET /docs HTTP/1.1" 200 OK
+INFO:     222.128.117.177:38530 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     222.128.117.177:39514 - "GET /api/kline?symbol=9988.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     222.128.117.177:39544 - "GET /api/kline?symbol=9988.HK&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     222.128.117.177:39513 - "GET /api/summary?symbol=9988.HK HTTP/1.1" 200 OK
+INFO:     222.128.117.177:39544 - "GET /api/summary?symbol=9988.HK HTTP/1.1" 200 OK
+INFO:     222.128.117.177:39782 - "GET /api/search?q=alibb HTTP/1.1" 200 OK
+INFO:     222.128.117.177:39544 - "GET /api/search?q=ali HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40136 - "GET /api/search?q=ali HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40150 - "GET /api/search?q=alibaba HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40174 - "GET /api/search?q=aliba HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40136 - "GET /api/search?q=Alibaba HTTP/1.1" 200 OK
+INFO:     222.128.117.177:39809 - "GET /api/search?q=%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/proj/stock_project/server/main.py", line 119, in search
+    data = get_json_with_failover(url, {"q": q, "quotesCount": 10, "newsCount": 0})
+  File "/proj/stock_project/server/main.py", line 56, in get_json_with_failover
+    raise RuntimeError(f"all proxies failed, last_err={last_err}")
+RuntimeError: all proxies failed, last_err=400 application/json;charset=utf-8
+INFO:     222.128.117.177:40650 - "GET /api/search?q=Alib HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40686 - "GET /api/search?q=a HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40693 - "GET /api/search?q=ali HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40849 - "GET /api/search?q=%E9%98%BF%E9%87%8Cbaba HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40974 - "GET /api/kline?symbol=BABA&tf=1m&range=1d HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40849 - "GET /api/summary?symbol=BABA HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40849 - "GET /api/kline?symbol=BABA&tf=1d&range=1d HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40849 - "GET /api/kline?symbol=BABA&tf=1wk&range=1d HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40650 - "GET /api/search?q=%E9%98%BF%E9%87%8C HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/proj/stock_project/server/main.py", line 119, in search
+    data = get_json_with_failover(url, {"q": q, "quotesCount": 10, "newsCount": 0})
+  File "/proj/stock_project/server/main.py", line 56, in get_json_with_failover
+    raise RuntimeError(f"all proxies failed, last_err={last_err}")
+RuntimeError: all proxies failed, last_err=400 application/json;charset=utf-8
+INFO:     222.128.117.177:41533 - "GET /api/kline?symbol=BABA&tf=1wk&range=3mo HTTP/1.1" 200 OK
+INFO:     222.128.117.177:40852 - "GET /api/search?q=%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4 HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/admin/miniconda3/envs/testenv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/proj/stock_project/server/main.py", line 119, in search
+    data = get_json_with_failover(url, {"q": q, "quotesCount": 10, "newsCount": 0})
+  File "/proj/stock_project/server/main.py", line 56, in get_json_with_failover
+    raise RuntimeError(f"all proxies failed, last_err={last_err}")
+RuntimeError: all proxies failed, last_err=400 application/json;charset=utf-8
+INFO:     45.194.92.18:38384 - "GET /index.htm HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [439747]

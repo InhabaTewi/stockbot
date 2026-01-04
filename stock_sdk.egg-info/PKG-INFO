@@ -1,0 +1,7 @@
+Metadata-Version: 2.4
+Name: stock-sdk
+Version: 0.1.0
+Summary: Personal stock data SDK (HK via Yahoo chart + Decodo proxy failover)
+Requires-Python: >=3.9
+Requires-Dist: requests
+Requires-Dist: pandas

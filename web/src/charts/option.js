@@ -91,10 +91,10 @@ export function makeChartOption(title, bars, chartMode = "candle", previousClose
             data: ohlc,
             markLine,
             itemStyle: {
-              color: undefined,
-              color0: undefined,
-              borderColor: undefined,
-              borderColor0: undefined,
+              color: "#00da3c", // 上涨颜色（绿色）
+              color0: "#ec0000", // 下跌颜色（红色）
+              borderColor: "#00da3c", // 上涨边框
+              borderColor0: "#ec0000", // 下跌边框
             },
           },
       {

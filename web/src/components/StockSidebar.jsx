@@ -107,7 +107,25 @@ export default function StockSidebar({
           <button style={styles.btn} onClick={() => setTf("1d")}>日K</button>
           <button style={styles.btn} onClick={() => setTf("1wk")}>周K</button>
           <button style={styles.btn} onClick={() => setTf("1mo")}>月K</button>
+        </div>
 
+        <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center" }}>
+          <span style={{ fontSize: 13, color: "#666" }}>范围:</span>
+          <select value={range} onChange={(e) => setRange(e.target.value)} style={styles.select}>
+            <option value="1d">1天</option>
+            <option value="5d">5天</option>
+            <option value="1mo">1月</option>
+            <option value="3mo">3月</option>
+            <option value="6mo">6月</option>
+            <option value="1y">1年</option>
+            <option value="2y">2年</option>
+            <option value="5y">5年</option>
+            <option value="10y">10年</option>
+            <option value="max">最大</option>
+          </select>
+        </div>
+
+        <div style={{ marginTop: 8 }}>
           <button style={styles.btnYellow} onClick={onToggleMode} title="切换曲线/蜡烛">
             {chartMode === "line" ? "曲线" : "蜡烛"}
           </button>
@@ -133,4 +151,5 @@ const styles = {
   sub: { marginLeft: 6, color: "#666", fontSize: 12, fontWeight: 700 },
   btn: { padding: "8px 10px", borderRadius: 10, border: "1px solid #ddd", background: "white", cursor: "pointer", fontWeight: 800 },
   btnYellow: { padding: "8px 16px", borderRadius: 10, border: "1px solid #ddd", background: "#ffd54a", cursor: "pointer", fontWeight: 900 },
+  select: { padding: "8px 10px", borderRadius: 10, border: "1px solid #ddd", background: "white", cursor: "pointer" },
 };

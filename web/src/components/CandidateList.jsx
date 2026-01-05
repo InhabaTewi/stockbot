@@ -23,8 +23,8 @@ export default function CandidateList({ items, onPick, onAddWatch }) {
           </div>
 
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <button style={styles.btn} onClick={() => onAddWatch(it)} title="加入监控">
-              监控
+            <button style={styles.btn} onClick={() => onAddWatch(it)} title="添加监控">
+              添加监控
             </button>
           </div>
         </div>

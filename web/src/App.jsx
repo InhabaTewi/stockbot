@@ -33,6 +33,7 @@ export default function App() {
   function addToWatch(it) {
     if (!it?.symbol) return;
     setWatchItems((prev) => uniqueBySymbol([...(prev || []), it]));
+    alert(`${it.symbol} 已添加至监控列表`);
     // 你也可以在加入后自动跳到监控页：setTab("watch")
   }
 

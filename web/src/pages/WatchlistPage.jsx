@@ -29,6 +29,22 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
     setValue(`${LS_WATCH}:expanded`, expandedMap);
   }, [expandedMap]);
 
+  // k线类型：symbol -> "1m" | "1d"（默认分k线）
+  const [tfMap, setTfMap] = useState(() => getValue(`${LS_WATCH}:tf`, {}));
+  const tfMapRef = useRef(tfMap);
+  useEffect(() => {
+    tfMapRef.current = tfMap;
+    setValue(`${LS_WATCH}:tf`, tfMap);
+  }, [tfMap]);
+
+  // k线范围：symbol -> range（默认分k线1d，日k线4mo）
+  const [rangeMap, setRangeMap] = useState(() => getValue(`${LS_WATCH}:range`, {}));
+  const rangeMapRef = useRef(rangeMap);
+  useEffect(() => {
+    rangeMapRef.current = rangeMap;
+    setValue(`${LS_WATCH}:range`, rangeMap);
+  }, [rangeMap]);
+
   // 数据缓存：summary/kline（简单内存缓存，页面刷新后会重新拉；如果你要持久化也可以）
   const [summaryMap, setSummaryMap] = useState({});
   const [klineMap, setKlineMap] = useState({});
@@ -65,7 +81,9 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
       const s = await apiGet("/api/summary", { symbol });
       setSummaryMap((m) => ({ ...m, [symbol]: s }));
       if (!summaryOnly && expandedMapRef.current?.[symbol]) {
-        const k = await apiGet("/api/kline", { symbol, tf: "1m", range: "1d" });
+        const tf = tfMapRef.current[symbol] || "1m";
+        const range = rangeMapRef.current[symbol] || (tf === "1d" ? "4mo" : "1d");
+        const k = await apiGet("/api/kline", { symbol, tf, range });
         setKlineMap((m) => ({ ...m, [symbol]: k.bars || [] }));
       }
     } finally {
@@ -82,7 +100,9 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
     if (next) {
       setLoadingMap((m) => ({ ...m, [symbol]: true }));
       try {
-        const k = await apiGet("/api/kline", { symbol, tf: "1m", range: "1d" });
+        const tf = tfMapRef.current[symbol] || "1m";
+        const range = rangeMapRef.current[symbol] || (tf === "1d" ? "4mo" : "1d");
+        const k = await apiGet("/api/kline", { symbol, tf, range });
         setKlineMap((m) => ({ ...m, [symbol]: k.bars || [] }));
       } catch {
         // ignore
@@ -100,6 +120,29 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
       delete mm[symbol];
       return mm;
     });
+  }
+
+  async function toggleTf(symbol) {
+    const current = tfMapRef.current[symbol] || "1m";
+    const next = current === "1m" ? "1d" : "1m";
+    setTfMap((m) => ({ ...m, [symbol]: next }));
+
+    // 设置对应的range
+    const nextRange = next === "1d" ? "4mo" : "1d";
+    setRangeMap((m) => ({ ...m, [symbol]: nextRange }));
+
+    // 如果展开了，重新加载k线
+    if (expandedMapRef.current?.[symbol]) {
+      setLoadingMap((m) => ({ ...m, [symbol]: true }));
+      try {
+        const k = await apiGet("/api/kline", { symbol, tf: next, range: nextRange });
+        setKlineMap((m) => ({ ...m, [symbol]: k.bars || [] }));
+      } catch {
+        // ignore
+      } finally {
+        setLoadingMap((m) => ({ ...m, [symbol]: false }));
+      }
+    }
   }
 
   // 顶部“添加到监控”：用 /api/search 找 best match
@@ -169,7 +212,10 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
                   kBars={klineMap[sym]}
                   loading={!!loadingMap[sym]}
                   expanded={expanded}
+                  tf={tfMap[sym] || "1m"}
+                  range={rangeMap[sym] || ((tfMap[sym] || "1m") === "1d" ? "4mo" : "1d")}
                   onToggle={() => toggleExpand(it)}
+                  onToggleTf={() => toggleTf(sym)}
                   onRemove={() => removeOne(sym)}
                   onRefreshOne={() => refreshOne(sym, { summaryOnly: false })}
                   dragProps={{ title: "拖拽排序：按住卡片拖动" }}

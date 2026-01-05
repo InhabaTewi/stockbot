@@ -6,7 +6,7 @@ echo "Starting all services..."
 
 # Start backend
 cd /proj/stock_project
-uvicorn server.main:app --reload --host 0.0.0.0 --port 8000 &
+conda run -n testenv uvicorn server.main:app --reload --host 0.0.0.0 --port 8000 &
 
 # Start frontend
 cd /proj/stock_project/web

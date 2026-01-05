@@ -27,16 +27,19 @@ export default function WatchlistCard({
   kBars,
   loading,
   expanded,
+  tf,
+  range,
   onToggle,
+  onToggleTf,
   onRemove,
   onRefreshOne,
   dragProps,
 }) {
   const option = useMemo(() => {
-    const title = `${item?.cn_name || item?.symbol} · 1m · 1d`;
+    const title = `${item?.cn_name || item?.symbol} · ${tf} · ${range}`;
     // 监控页展开默认看分K曲线 + 昨收线
     return makeChartOption(title, kBars || [], "line", summary?.previousClose);
-  }, [item, kBars, summary]);
+  }, [item, kBars, summary, tf, range]);
 
   return (
     <div style={styles.card} {...dragProps}>
@@ -64,6 +67,11 @@ export default function WatchlistCard({
           <button style={styles.btn} onClick={onToggle}>
             {expanded ? "收起" : "展开K线"}
           </button>
+          {expanded && (
+            <button style={styles.btn} onClick={onToggleTf} title="切换分K/日K">
+              {tf === "1m" ? "日K" : "分K"}
+            </button>
+          )}
           <button style={styles.btnDanger} onClick={onRemove}>
             删除
           </button>

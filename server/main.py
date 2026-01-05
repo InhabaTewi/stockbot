@@ -56,8 +56,9 @@ DECODO_USER = os.getenv("DECODO_USER", "sp40emzvtw")
 DECODO_PASS_ENC = os.getenv("DECODO_PASS_ENC", "Usdu1w%3DijbPa5a4H2R")
 
 PROXY_CANDIDATES = [
-    ("fr.decodo.com", [40001, 40002, 40003]),
-    ("au.decodo.com", [30001, 30002, 30003]),
+    ("fr.decodo.com", [40004, 40005, 40006,40007, 40008, 40009, 40010]),
+    ("au.decodo.com", [30004, 30005, 30006, 30007, 30008, 30009, 30010]),
+    (None, [None]),  # 不使用代理
 ]
 
 YAHOO_HEADERS = {
@@ -74,11 +75,17 @@ def get_json_with_failover(url: str, params: dict, timeout: int = 25) -> dict:
     last_err = None
     for host, ports in PROXY_CANDIDATES:
         for port in ports:
-            proxy = mk_proxy(host, port)
-            s = requests.Session()
-            s.trust_env = False  # 不吃环境代理
-            s.proxies.update({"http": proxy, "https": proxy})
-            s.headers.update(YAHOO_HEADERS)
+            if host is None and port is None:
+                # 不使用代理
+                s = requests.Session()
+                s.trust_env = False
+                s.headers.update(YAHOO_HEADERS)
+            else:
+                proxy = mk_proxy(host, port)
+                s = requests.Session()
+                s.trust_env = False  # 不吃环境代理
+                s.proxies.update({"http": proxy, "https": proxy})
+                s.headers.update(YAHOO_HEADERS)
             try:
                 r = s.get(url, params=params, timeout=timeout)
                 ctype = (r.headers.get("content-type") or "").lower()
@@ -92,17 +99,34 @@ def get_json_with_failover(url: str, params: dict, timeout: int = 25) -> dict:
     raise RuntimeError(f"all proxies failed, last_err={last_err}")
 
 
-def yahoo_chart(symbol: str, interval: str, range_: str) -> dict:
+def yahoo_chart(symbol: str, interval: str, range_: str = None, start: int = None, end: int = None) -> dict:
     url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
-    return get_json_with_failover(url, {"interval": interval, "range": range_})
+    params = {"interval": interval}
+    if range_:
+        params["range"] = range_
+    elif start and end:
+        params["period1"] = start
+        params["period2"] = end
+    return get_json_with_failover(url, params)
 
 
 # -------------------------
 # Helpers
 # -------------------------
 def hk_to_yahoo_symbol(stock_code: str) -> str:
-    # 01810 -> 1810.HK
-    return f"{int(stock_code)}.HK"
+    # 01810 -> 1810.HK, 0981 -> 0981.HK
+    code = stock_code.lstrip('0')  # 移除前导0
+    return f"{code.zfill(4)}.HK"  # 补0到4位
+
+
+def normalize_yahoo_symbol(symbol: str) -> str:
+    """规范化Yahoo股票符号"""
+    if symbol.endswith('.HK'):
+        # 香港股票：确保代码是4位数字
+        code = symbol[:-3]  # 移除.HK
+        if code.isdigit():
+            return hk_to_yahoo_symbol(code)
+    return symbol
 
 
 def resolve_stock_alias_columns(cur) -> Dict[str, str]:
@@ -114,7 +138,7 @@ def resolve_stock_alias_columns(cur) -> Dict[str, str]:
         """,
         (DB_NAME,),
     )
-    cols = {r[0] for r in cur.fetchall()}
+    cols = {r['COLUMN_NAME'] if isinstance(r, dict) else r[0] for r in cur.fetchall()}
 
     alias_col = None
     for c in ["alias", "alias_name", "name", "keyword"]:
@@ -128,10 +152,9 @@ def resolve_stock_alias_columns(cur) -> Dict[str, str]:
             target_col = c
             break
 
-    if not alias_col:
-        raise RuntimeError(f"stock_aliases missing alias column, cols={sorted(cols)}")
-    if not target_col:
-        raise RuntimeError(f"stock_aliases missing target column, cols={sorted(cols)}")
+    if not alias_col or not target_col:
+        # 如果表不存在或列不匹配，使用默认值
+        return {"alias_col": "alias", "target_col": "stock_name"}
 
     return {"alias_col": alias_col, "target_col": target_col}
 
@@ -301,19 +324,24 @@ def latest_price_change_robust(symbol: str) -> dict:
     }
 
 
-def high_6m_1y(symbol: str) -> dict:
-    cj = yahoo_chart(symbol, interval="1d", range_="1y")
-    df = chart_to_ohlcv(cj).dropna(subset=["High"])
+def high_6m_1y_2y(symbol: str) -> dict:
+    cj = yahoo_chart(symbol, interval="1d", range_="2y")
+    df = chart_to_ohlcv(cj).dropna(subset=["High", "Low"])
     if df.empty:
-        return {"high6m": None, "high1y": None}
+        return {"high6m": None, "low6m": None, "high1y": None, "low1y": None, "high2y": None, "low2y": None}
 
     now = pd.Timestamp.utcnow()
     df6 = df[df.index >= now - pd.Timedelta(days=183)]
     dfy = df[df.index >= now - pd.Timedelta(days=365)]
+    df2y = df[df.index >= now - pd.Timedelta(days=730)]
 
     return {
         "high6m": float(df6["High"].max()) if not df6.empty else None,
+        "low6m": float(df6["Low"].min()) if not df6.empty else None,
         "high1y": float(dfy["High"].max()) if not dfy.empty else None,
+        "low1y": float(dfy["Low"].min()) if not dfy.empty else None,
+        "high2y": float(df2y["High"].max()) if not df2y.empty else None,
+        "low2y": float(df2y["Low"].min()) if not df2y.empty else None,
     }
 
 
@@ -348,28 +376,60 @@ TF = Literal["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1d", "1wk", "1mo"]
 
 
 @app.get("/api/kline")
-def kline(symbol: str, tf: TF = "1d", range_: str = Query("3mo", alias="range")):
-    cj = yahoo_chart(symbol, interval=tf, range_=range_)
-    df = chart_to_ohlcv(cj).dropna(subset=["Open", "High", "Low", "Close"])
+def kline(symbol: str, tf: TF = "1d", range_: str = Query(None, alias="range"), start: int = None, end: int = None):
+    symbol = normalize_yahoo_symbol(symbol)
+    try:
+        if range_:
+            cj = yahoo_chart(symbol, interval=tf, range_=range_)
+        elif start and end:
+            cj = yahoo_chart(symbol, interval=tf, start=start, end=end)
+        else:
+            cj = yahoo_chart(symbol, interval=tf, range_="3mo")
+        df = chart_to_ohlcv(cj).dropna(subset=["Open", "High", "Low", "Close"])
 
-    bars = []
-    for t, row in df.iterrows():
-        bars.append(
-            [
-                int(t.timestamp() * 1000),
-                float(row["Open"]),
-                float(row["Close"]),
-                float(row["Low"]),
-                float(row["High"]),
-                int(row["Volume"]) if pd.notna(row["Volume"]) else 0,
-            ]
-        )
-    return {"symbol": symbol, "tf": tf, "range": range_, "bars": bars}
+        bars = []
+        for t, row in df.iterrows():
+            bars.append(
+                [
+                    int(t.timestamp() * 1000),
+                    float(row["Open"]),
+                    float(row["Close"]),
+                    float(row["Low"]),
+                    float(row["High"]),
+                    int(row["Volume"]) if pd.notna(row["Volume"]) else 0,
+                ]
+            )
+        return {"symbol": symbol, "tf": tf, "range": range_, "bars": bars}
+    except Exception as e:
+        # 如果Yahoo API失败，返回空数据而不是500错误
+        return {"symbol": symbol, "tf": tf, "range": range_, "bars": [], "error": str(e)}
 
 
 @app.get("/api/summary")
 def summary(symbol: str):
-    # ✅ 更稳的后端计算
-    info = latest_price_change_robust(symbol)
-    highs = high_6m_1y(symbol)
-    return {"symbol": symbol, **info, **highs}
+    symbol = normalize_yahoo_symbol(symbol)
+    try:
+        # ✅ 更稳的后端计算
+        info = latest_price_change_robust(symbol)
+        highs = high_6m_1y_2y(symbol)
+        return {"symbol": symbol, **info, **highs}
+    except Exception as e:
+        # 如果Yahoo API失败，返回默认数据而不是500错误
+        return {
+            "symbol": symbol,
+            "price": None,
+            "prevClose": None,
+            "change": None,
+            "pctChange": None,
+            "currency": None,
+            "exchangeName": None,
+            "regularMarketTime": None,
+            "calcSource": "error",
+            "high6m": None,
+            "low6m": None,
+            "high1y": None,
+            "low1y": None,
+            "high2y": None,
+            "low2y": None,
+            "error": str(e)
+        }

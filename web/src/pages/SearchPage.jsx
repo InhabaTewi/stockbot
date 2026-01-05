@@ -52,12 +52,24 @@ export default function SearchPage({ onAddWatch }) {
     setChartMode(tf === "1m" && range === "1d" ? "line" : "candle");
   }, [tf, range]);
 
+  const cacheRef = useRef({}); // {key: {data, timestamp}}
+
+  const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
   async function loadSummary(sym) {
+    const key = `summary_${sym}`;
+    const cached = cacheRef.current[key];
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      setSummary(cached.data);
+      setSummaryErr("");
+      return;
+    }
     setSummaryErr("");
     setLoadingSummary(true);
     try {
       const data = await apiGet("/api/summary", { symbol: sym });
       setSummary(data);
+      cacheRef.current[key] = { data, timestamp: Date.now() };
     } catch (e) {
       setSummaryErr(String(e.message || e));
     } finally {
@@ -66,11 +78,20 @@ export default function SearchPage({ onAddWatch }) {
   }
 
   async function loadKline(sym, tf0, range0) {
+    const key = `kline_${sym}_${tf0}_${range0}`;
+    const cached = cacheRef.current[key];
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      setKBars(cached.data || []);
+      setKErr("");
+      return;
+    }
     setKErr("");
     setLoadingK(true);
     try {
       const data = await apiGet("/api/kline", { symbol: sym, tf: tf0, range: range0 });
-      setKBars(data.bars || []);
+      const bars = data.bars || [];
+      setKBars(bars);
+      cacheRef.current[key] = { data: bars, timestamp: Date.now() };
     } catch (e) {
       setKErr(String(e.message || e));
     } finally {
@@ -110,6 +131,11 @@ export default function SearchPage({ onAddWatch }) {
   function selectItem(it, { resetDefault = true } = {}) {
     setSelected(it);
     setCandidates([]);
+    // 清空之前的数据
+    setSummary(null);
+    setKBars([]);
+    setSummaryErr("");
+    setKErr("");
     if (resetDefault) {
       modeLockRef.current = false;
       setTf("1m");
@@ -180,7 +206,7 @@ export default function SearchPage({ onAddWatch }) {
     if (!symbol || tf !== "1m") return;
     const t = setInterval(() => {
       Promise.all([loadKline(symbol, tf, range), loadSummary(symbol)]).catch(() => {});
-    }, 20000);
+    }, 10000); // 每10秒刷新一次
     return () => clearInterval(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symbol, tf, range]);
@@ -218,7 +244,14 @@ export default function SearchPage({ onAddWatch }) {
           setTf={(v) => {
             modeLockRef.current = false;
             setTf(v);
-            saveState(LS_PAGE, { tf: v, modeLock: false });
+            // 根据tf设置合理的默认range
+            let defaultRange = range;
+            if (v === "1m") defaultRange = "1d";
+            else if (v === "1d") defaultRange = "4mo";
+            else if (v === "1wk") defaultRange = "2y";
+            else if (v === "1mo") defaultRange = "10y";
+            if (defaultRange !== range) setRange(defaultRange);
+            saveState(LS_PAGE, { tf: v, range: defaultRange, modeLock: false });
           }}
           range={range}
           setRange={(v) => {

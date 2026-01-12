@@ -10,6 +10,8 @@ import mysql.connector
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
+from .tencent_finance import fetch_intraday_minute_bars, fetch_quote
+
 # -------------------------
 # Load .env (VERY IMPORTANT)
 # -------------------------
@@ -379,6 +381,15 @@ TF = Literal["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1d", "1wk", "1mo"]
 def kline(symbol: str, tf: TF = "1d", range_: str = Query(None, alias="range"), start: int = None, end: int = None):
     symbol = normalize_yahoo_symbol(symbol)
     try:
+        # Tencent: intraday minute bars (real-time) for the most common case
+        if tf == "1m" and (range_ or "").lower() == "1d" and not (start or end):
+            try:
+                bars = fetch_intraday_minute_bars(symbol)
+                return {"symbol": symbol, "tf": tf, "range": range_, "bars": bars}
+            except Exception:
+                # fallback to Yahoo below
+                pass
+
         if range_:
             cj = yahoo_chart(symbol, interval=tf, range_=range_)
         elif start and end:
@@ -409,8 +420,17 @@ def kline(symbol: str, tf: TF = "1d", range_: str = Query(None, alias="range"), 
 def summary(symbol: str):
     symbol = normalize_yahoo_symbol(symbol)
     try:
-        # ✅ 更稳的后端计算
-        info = latest_price_change_robust(symbol)
+        # Prefer Tencent for real-time latest price; use Yahoo for the rest.
+        info = None
+        try:
+            q = fetch_quote(symbol)
+            info = q.to_api_dict()
+            # Frontend uses both naming variants in different places.
+            info["previousClose"] = info.get("prevClose")
+        except Exception:
+            info = latest_price_change_robust(symbol)
+            info["previousClose"] = info.get("prevClose")
+
         highs = high_6m_1y_2y(symbol)
         return {"symbol": symbol, **info, **highs}
     except Exception as e:
@@ -419,6 +439,7 @@ def summary(symbol: str):
             "symbol": symbol,
             "price": None,
             "prevClose": None,
+            "previousClose": None,
             "change": None,
             "pctChange": None,
             "currency": None,

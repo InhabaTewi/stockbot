@@ -1,5 +1,304 @@
-nohup uvicorn server.main:app --host 0.0.0.0 --port 8000 > api.log 2>&1 &
+# 股票查询系统（stock_project）项目说明
 
-ps -ef | grep uvicorn   关闭后台服务
-ps -ef | grep vite
-kill （PID）
+> 本文件为项目“rm”说明（Markdown 格式），用于快速理解：项目做什么、各部分如何协作、每个目录/主要文件的职责，以及如何启动。
+
+## 1. 项目简介
+
+这是一个“港股为主”的股票查询与监控系统，包含：
+
+- **后端 API（FastAPI）**：提供搜索、K 线、行情摘要等接口。
+- **前端 Web（React + Vite）**：搜索股票、查看图表、监控列表、股票对比等。
+- **Python SDK（stock_sdk）**：独立可复用的拉取数据 SDK（当前重点：Yahoo Chart + 代理轮询）。
+- **数据准备工具脚本（tools/）**：抓取股票映射表/别名并写入 MySQL，供后端搜索使用。
+
+数据源策略：
+
+- **Tencent Finance**：优先用于“实时”报价与分时分钟线（更快、更贴近实时）。
+- **Yahoo Chart**：用于更通用的 K 线、以及一些高低点统计；并支持可选代理池（Decodo）轮询兜底。
+
+## 2. 整体架构
+
+```text
+┌───────────────┐      HTTP       ┌────────────────────────┐
+│  Web Frontend  │  ───────────▶  │   FastAPI Backend API   │
+│ (React + Vite) │                │      server/main.py     │
+└───────┬───────┘                ├───────────┬─────────────┤
+				│                         │           │
+				│                         │           │
+				▼                         ▼           ▼
+	LocalStorage                MySQL        Upstream Data
+ (watchlist等)          (stock_mapping/   Tencent / Yahoo
+												 stock_aliases)
+```
+
+## 3. 快速启动
+
+### 3.1 前置依赖
+
+- Python >= 3.9
+- Node.js（用于 `web/`）
+- MySQL（用于股票搜索库）
+
+后端主要依赖（代码中用到）：`fastapi`、`uvicorn`、`requests`、`pandas`、`mysql-connector-python`（以及可选 `python-dotenv`）。
+
+### 3.2 环境变量（后端）
+
+后端会尝试读取 `/proj/.env`（注意：路径是写死的），也会读取系统环境变量。常用变量：
+
+- 数据库：
+	- `DB_HOST`（默认 localhost）
+	- `DB_PORT`（默认 3306）
+	- `DB_USER`（默认 root）
+	- `DB_PASSWORD`（默认空）
+	- `DB_NAME`（默认 stock_data）
+- Yahoo/代理（可选，用于 Yahoo Chart 访问）：
+	- `DECODO_USER`
+	- `DECODO_PASS_ENC`（URL-encoded 的密码，例如 `=` 需要写成 `%3D`）
+
+### 3.3 启动/停止
+
+使用脚本（推荐）：
+
+- 启动全部：`bash scripts/start_all.sh`
+- 只启动后端：`bash scripts/start_backend.sh`
+- 只启动前端：`bash scripts/start_frontend.sh`
+- 停止全部：`bash scripts/stop_all.sh`
+- 停止后端：`bash scripts/stop_backend.sh`（当前通过 `pkill -f uvicorn`）
+- 停止前端：`bash scripts/stop_frontend.sh`（当前通过 `pkill -f vite`）
+- 检查端口：`bash scripts/test_services.sh`（默认检查 8000 与 5173）
+
+手动启动示例：
+
+```bash
+# Backend
+uvicorn server.main:app --reload --host 0.0.0.0 --port 8000
+
+# Frontend
+cd web
+npm install
+npm run dev
+```
+
+## 4. 后端 API（server/）
+
+后端入口：`server/main.py`（FastAPI App）。主要 API：
+
+- `GET /api/search?q=...`
+	- 从 MySQL 的 `stock_mapping`/`stock_aliases` 查询匹配港股并返回候选列表。
+- `GET /api/kline?symbol=...&tf=...&range=...`（或 `start/end`）
+	- 常用分K：当 `tf=1m` 且 `range=1d` 时优先走腾讯分钟线；失败则回退到 Yahoo。
+	- 其他周期/范围：走 Yahoo Chart。
+- `GET /api/summary?symbol=...`
+	- 优先腾讯获取实时价/昨收/涨跌；再用 Yahoo 计算 6m/1y/2y 高低点。
+
+### 4.1 server/ 目录文件说明
+
+- `server/main.py`
+	- FastAPI 主程序。
+	- CORS 放开（allow_origins=*）。
+	- 数据库搜索：根据输入（代码/中文名/alias）返回候选。
+	- Yahoo Chart 拉取带代理 failover：多 host/port 轮询，拿到 JSON 即返回。
+	- 对外返回 `bars` 格式：`[ts_ms, open, close, low, high, volume]`。
+
+- `server/tencent_finance.py`
+	- 封装腾讯行情：
+		- `fetch_quote()`：qt 接口，解析 GBK 文本返回实时价、昨收、涨跌幅等。
+		- `fetch_intraday_minute_bars()`：minute/query 接口，返回当日分钟线，并把累计成交量转换为分钟增量。
+	- `to_tencent_code()`：把 `00700.HK`/`700.HK`/`00700` 等转换为腾讯需要的 `hk00700`。
+
+- `server/__init__.py`
+	- 空文件，用于把 `server/` 作为 Python 包。
+
+> `server/__pycache__/` 为 Python 自动生成缓存目录。
+
+## 5. Python SDK（stock_sdk/）
+
+SDK 的定位：独立于后端 API，可作为“脚本/服务”调用的客户端库。
+
+### 5.1 入口与用法
+
+- 入口类：`stock_sdk.client.StockClient`
+- 示例：见 `examples/hk_price.py`
+
+### 5.2 stock_sdk/ 目录文件说明
+
+- `stock_sdk/__init__.py`
+	- 对外导出：`StockClient`、配置 dataclass、错误类型等。
+
+- `stock_sdk/client.py`
+	- `StockClient`：SDK 使用入口。
+	- 当前实现：`self.hk = YahooChartProvider(...)`，提供 `hk_latest_close()` / `hk_kline()` 等便捷方法。
+
+- `stock_sdk/config.py`
+	- SDK 配置 dataclass：
+		- `DecodoAuth`（用户名、URL-encoded 密码）
+		- `ProxyPool`（host + ports）
+		- `RetryPolicy`（超时、重试、退避等）
+		- `YahooChartConfig`（UA/Accept）
+		- `SDKConfig`（聚合配置 + 内存缓存 TTL）
+
+- `stock_sdk/http.py`
+	- `ProxyRotator`：
+		- 多 host/port 轮询尝试；对 429/HTML/非 JSON/5xx 等做识别并退避。
+		- 可“记住 last good”路由以提高命中率。
+		- 内置简单 TTL 内存缓存，避免短时间重复请求。
+
+- `stock_sdk/providers/yahoo_chart.py`
+	- `YahooChartProvider`：
+		- `fetch_chart()`：请求 Yahoo Chart JSON。
+		- `to_dataframe()`：把 chart JSON 转换为 pandas DataFrame。
+		- `latest_close()`：从 close 数组倒序取最后一个非空收盘价。
+
+- `stock_sdk/errors.py`
+	- SDK 统一错误：`StockSDKError` 及其子类（`ProxyAllFailed`、`UpstreamBlocked`、`UpstreamBadGateway`）。
+
+> `stock_sdk/__pycache__/`、`stock_sdk.egg-info/` 为打包/运行产生的缓存与元数据目录。
+
+## 6. 前端 Web（web/）
+
+前端是一个单页应用：顶部 Tabs 切换不同功能页。
+
+### 6.1 前端功能页
+
+- 搜索（Search）：输入中文/英文/代码 → 调用 `/api/search` → 选择股票后展示 `/api/summary` + `/api/kline` 图表。
+- 监控（Watchlist）：本地保存监控列表；定时刷新 summary；展开卡片时加载 K 线；支持拖拽排序。
+- 比对（Compare）：选择多只股票叠加对比曲线（分K/日K），支持区间与价格/百分比轴。
+- 预警（Alerts）：占位页，暂未实现。
+
+### 6.2 web/ 目录文件说明
+
+- `web/package.json`
+	- 前端依赖与脚本：`npm run dev/build/lint/preview`。
+	- 图表：`echarts` + `echarts-for-react`。
+	- 拖拽：`@hello-pangea/dnd`。
+
+- `web/vite.config.js`
+	- Vite 构建配置。
+
+- `web/index.html`
+	- SPA HTML 模板入口。
+
+- `web/eslint.config.js`
+	- ESLint 配置。
+
+- `web/public/`
+	- 静态资源目录（按需放置）。
+
+- `web/src/main.jsx`
+	- React 入口：挂载 `<App />`。
+
+- `web/src/App.jsx`
+	- 应用根组件：Tabs + 各页面路由（通过 state 切换）。
+	- localStorage：保存 tab 与 watchlist。
+
+- `web/src/App.css`
+	- 全局样式（如有）。
+
+- `web/src/pages/SearchPage.jsx`
+	- 搜索页主逻辑：
+		- debounced 输入 → `/api/search`
+		- 选中股票后加载 `/api/summary` 与 `/api/kline`
+		- 1m 模式下每 10 秒自动刷新
+		- 内存缓存（5 分钟 TTL）减少重复请求
+
+- `web/src/pages/WatchlistPage.jsx`
+	- 监控页：
+		- watchlist 持久化
+		- summary 20 秒轮询刷新
+		- 展开后加载 K 线
+		- 拖拽排序（HTML5 draggable 简化实现）
+
+- `web/src/pages/ComparePage.jsx`
+	- 对比页：
+		- 多股票叠加折线
+		- 支持分K/日K与不同 range（含自定义 start/end）
+		- 支持价格/百分比 y 轴
+		- 左侧可从搜索与监控列表加入、并支持拖拽排序
+
+- `web/src/pages/AlertsPage.jsx`
+	- 占位页：暂未实现。
+
+- `web/src/services/api.js`
+	- 简单的 `apiGet()`：基于 `fetch` 拼 URL + querystring，返回 JSON。
+
+- `web/src/charts/option.js`
+	- `makeChartOption()`：把后端 bars 转为 ECharts 配置（K线/曲线 + 成交量子图 + dataZoom）。
+
+- `web/src/hooks/useDebouncedValue.js`
+	- 输入防抖 hook（用于搜索）。
+
+- `web/src/utils/storage.js`
+	- localStorage 的轻量封装（load/save/set/get）。
+
+- `web/src/utils/search.js`
+	- `normalizeQuery()`：规范化搜索词。
+	- `rankHKItem()`：对搜索候选进行偏好排序（例如优先非 -R/-WR）。
+
+- `web/src/utils/format.js`
+	- 数字/百分比格式化与候选展示文案拼接。
+
+- `web/src/components/Tabs.jsx`
+	- 顶部 Tab 切换组件。
+
+- `web/src/components/StockHeader.jsx`
+	- 搜索页顶部输入框 + 刷新/清空按钮。
+
+- `web/src/components/CandidateList.jsx`
+	- 搜索候选列表：展示股票名与 symbol，支持“添加监控”。
+
+- `web/src/components/StockSidebar.jsx`
+	- 右侧信息栏：价格/涨跌/昨收/高低点、K线周期与范围选择、图表模式切换。
+
+- `web/src/components/StockChart.jsx`
+	- 图表容器：基于 `echarts-for-react` 渲染图表。
+
+- `web/src/components/Watchlist/WatchlistHeader.jsx`
+	- 监控页顶部：输入 + “添加到监控”。
+
+- `web/src/components/Watchlist/WatchlistCard.jsx`
+	- 监控页卡片：展示 KPI、展开后显示图表、刷新/删除/切换周期。
+
+- `web/src/assets/`
+	- 资源目录（按需）。
+
+## 7. 数据准备工具（tools/）
+
+- `tools/stock_mapping.py`
+	- 目标：生成并维护 MySQL 中的基础数据表：
+		- `stock_mapping`：股票代码/名称/市场（SH/SZ/HK）等
+		- `stock_aliases`：别名 -> 标准名称
+	- 数据来源：AkShare（A股、港股列表）+ 可选别名生成逻辑。
+	- 注意：该脚本引入了 `akshare`、`sqlalchemy`、`pymysql`、（可选 `pypinyin`）等依赖，运行前需在 Python 环境中安装。
+
+## 8. 示例（examples/）
+
+- `examples/hk_price.py`
+	- 演示如何用 `stock_sdk` 配置代理池并拉取：
+		- 多只港股 latest close
+		- 单只港股 K 线 DataFrame
+
+## 9. 运行脚本（scripts/）
+
+- `scripts/start_all.sh`：启动后端 + 前端（后台运行）。
+- `scripts/start_backend.sh`：启动后端（uvicorn）。
+- `scripts/start_frontend.sh`：启动前端（vite）。
+- `scripts/stop_all.sh`：停止 uvicorn + vite。
+- `scripts/stop_backend.sh`：`pkill -f uvicorn`。
+- `scripts/stop_frontend.sh`：`pkill -f vite`。
+- `scripts/test_services.sh`：用 `nc -z` 检测端口是否存活。
+
+## 10. 其他目录
+
+- `backup/App.jsx`
+	- 旧的/备份的前端 App 版本（不参与当前构建）。
+
+## 11. 常见问题
+
+1) 为什么搜索不到股票？
+- `/api/search` 依赖 MySQL 的 `stock_mapping` 数据；请先确保表已初始化并有数据（可用 `tools/stock_mapping.py` 生成）。
+
+2) Yahoo 拉取失败怎么办？
+- 项目实现了代理轮询与兜底，但仍可能受上游限制影响。可检查 `DECODO_*` 配置或暂时只用腾讯接口覆盖常用场景。
+
+3) 后端启动后访问哪里？
+- API 文档：`http://localhost:8000/docs`

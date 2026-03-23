@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# Script to start all services (frontend and backend)
+set -euo pipefail
 
-echo "Starting all services..."
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Start backend
-cd /proj/stock_project
-conda run -n testenv uvicorn server.main:app --reload --host 0.0.0.0 --port 8000 &
-
-# Start frontend
-cd /proj/stock_project/web
-npm run dev &
-
+echo "Starting stock_project services..."
+"$SCRIPT_DIR/start_backend.sh"
+"$SCRIPT_DIR/start_frontend.sh"
 echo "All services started."

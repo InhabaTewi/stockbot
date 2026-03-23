@@ -9,17 +9,12 @@ export default function Tabs({ active, onChange }) {
   ];
 
   return (
-    <div style={styles.wrap}>
+    <div className="tabs-wrap">
       {tabs.map((t) => (
         <button
           key={t.k}
           onClick={() => onChange(t.k)}
-          style={{
-            ...styles.tab,
-            background: active === t.k ? "white" : "transparent",
-            borderColor: active === t.k ? "#ddd" : "transparent",
-            fontWeight: active === t.k ? 800 : 600,
-          }}
+          className={`tab-item ${active === t.k ? "active" : ""}`}
         >
           {t.label}
         </button>
@@ -27,21 +22,3 @@ export default function Tabs({ active, onChange }) {
     </div>
   );
 }
-
-const styles = {
-  wrap: {
-    display: "flex",
-    gap: 8,
-    padding: 6,
-    border: "1px solid #e9e9ee",
-    borderRadius: 12,
-    background: "#f1f2f7",
-    width: "fit-content",
-  },
-  tab: {
-    padding: "8px 12px",
-    borderRadius: 10,
-    border: "1px solid transparent",
-    cursor: "pointer",
-  },
-};

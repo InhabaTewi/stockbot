@@ -1,13 +1,10 @@
 #!/bin/bash
 
-# Script to stop all services (frontend and backend)
+set -euo pipefail
 
-echo "Stopping all services..."
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Kill backend
-pkill -f "uvicorn"
-
-# Kill frontend
-pkill -f "vite"
-
+echo "Stopping stock_project services..."
+"$SCRIPT_DIR/stop_backend.sh"
+"$SCRIPT_DIR/stop_frontend.sh"
 echo "All services stopped."

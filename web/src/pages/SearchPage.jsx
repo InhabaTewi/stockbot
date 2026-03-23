@@ -8,6 +8,7 @@ import { apiGet } from "../services/api";
 import { loadState, saveState } from "../utils/storage";
 import { normalizeQuery, rankHKItem } from "../utils/search";
 import { makeChartOption } from "../charts/option";
+import { buildDisplay } from "../utils/format";
 
 const LS_PAGE = "stock_project_search_page_v1";
 
@@ -211,7 +212,7 @@ export default function SearchPage({ onAddWatch }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symbol, tf, range]);
 
-  const chartTitle = symbol ? `${selected?.cn_name || symbol} · ${tf} · ${range}` : "K线";
+  const chartTitle = symbol ? `${buildDisplay(selected)} · ${tf} · ${range}` : "K线";
   const option = useMemo(() => makeChartOption(chartTitle, kBars, chartMode), [chartTitle, kBars, chartMode]);
 
   return (
@@ -234,7 +235,7 @@ export default function SearchPage({ onAddWatch }) {
         onAddWatch={(it) => onAddWatch(it)}
       />
 
-      <div style={styles.main} className="mainWrap">
+      <div className="layout-main">
         <StockSidebar
           selected={selected}
           summary={summary}
@@ -271,15 +272,7 @@ export default function SearchPage({ onAddWatch }) {
         />
 
         <StockChart selected={selected} option={option} />
-
-        <style>{`
-          @media (max-width: 1100px) { .mainWrap { flex-direction: column; } }
-        `}</style>
       </div>
     </>
   );
 }
-
-const styles = {
-  main: { marginTop: 14, display: "flex", gap: 14, alignItems: "stretch" },
-};

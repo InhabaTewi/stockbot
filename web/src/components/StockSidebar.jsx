@@ -1,5 +1,6 @@
 // src/components/StockSidebar.jsx
 import React from "react";
+import { buildDisplay } from "../utils/format";
 
 function fmtNum(x) {
   if (x === null || x === undefined || Number.isNaN(Number(x))) return "--";
@@ -51,22 +52,21 @@ export default function StockSidebar({
   const pct1y = summary?.pctOfHigh1y ?? ratioPct(price, summary?.high1y);
 
   return (
-    <div style={styles.side}>
-      <div style={{ fontWeight: 900, fontSize: 16 }}>{selected.cn_name}</div>
-      <div style={{ color: "#666", fontSize: 12, marginTop: 2 }}>{selected.symbol}</div>
+    <div className="sidebar-card" style={{ width: 360, minWidth: 320 }}>
+      <div style={{ fontWeight: 900, fontSize: 16 }}>{buildDisplay(selected)}</div>
 
-      <div style={{ marginTop: 12, display: "flex", gap: 12, flexWrap: "wrap" }}>
-        <div style={styles.kpi}>
-          <div style={styles.k}>当前价</div>
-          <div style={styles.v}>{fmtNum(price)}</div>
+      <div className="kpi-grid">
+        <div className="kpi-item">
+          <div className="kpi-label">当前价</div>
+          <div className="kpi-value">{fmtNum(price)}</div>
         </div>
-        <div style={styles.kpi}>
-          <div style={styles.k}>涨跌幅</div>
-          <div style={{ ...styles.v, color: pctColor(pct) }}>{fmtPct(pct)}</div>
+        <div className="kpi-item">
+          <div className="kpi-label">涨跌幅</div>
+          <div className="kpi-value" style={{ color: pctColor(pct) }}>{fmtPct(pct)}</div>
         </div>
-        <div style={styles.kpi}>
-          <div style={styles.k}>昨收</div>
-          <div style={styles.v}>{fmtNum(summary?.previousClose)}</div>
+        <div className="kpi-item">
+          <div className="kpi-label">昨收</div>
+          <div className="kpi-value">{fmtNum(summary?.previousClose)}</div>
         </div>
       </div>
 
@@ -99,19 +99,19 @@ export default function StockSidebar({
         </div>
       </div>
 
-      <div style={{ marginTop: 14, borderTop: "1px solid #f0f0f0", paddingTop: 12 }}>
+      <div style={{ marginTop: 14, borderTop: "1px solid rgba(32, 74, 130, 0.14)", paddingTop: 12 }}>
         <div style={{ fontWeight: 900, marginBottom: 8 }}>K线</div>
 
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button style={styles.btn} onClick={() => setTf("1m")}>分K</button>
-          <button style={styles.btn} onClick={() => setTf("1d")}>日K</button>
-          <button style={styles.btn} onClick={() => setTf("1wk")}>周K</button>
-          <button style={styles.btn} onClick={() => setTf("1mo")}>月K</button>
+          <button className="stock-button" style={{ padding: "8px 10px" }} onClick={() => setTf("1m")}>分K</button>
+          <button className="stock-button" style={{ padding: "8px 10px" }} onClick={() => setTf("1d")}>日K</button>
+          <button className="stock-button" style={{ padding: "8px 10px" }} onClick={() => setTf("1wk")}>周K</button>
+          <button className="stock-button" style={{ padding: "8px 10px" }} onClick={() => setTf("1mo")}>月K</button>
         </div>
 
         <div style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center" }}>
-          <span style={{ fontSize: 13, color: "#666" }}>范围:</span>
-          <select value={range} onChange={(e) => setRange(e.target.value)} style={styles.select}>
+          <span className="muted" style={{ fontSize: 13 }}>范围:</span>
+          <select value={range} onChange={(e) => setRange(e.target.value)} className="stock-select" style={{ padding: "8px 10px" }}>
             <option value="1d">1天</option>
             <option value="5d">5天</option>
             <option value="1mo">1月</option>
@@ -126,12 +126,12 @@ export default function StockSidebar({
         </div>
 
         <div style={{ marginTop: 8 }}>
-          <button style={styles.btnYellow} onClick={onToggleMode} title="切换曲线/蜡烛">
+          <button className="stock-button stock-button-warn" style={{ padding: "8px 16px" }} onClick={onToggleMode} title="切换曲线/蜡烛">
             {chartMode === "line" ? "曲线" : "蜡烛"}
           </button>
         </div>
 
-        <div style={{ marginTop: 8, color: kErr ? "#b42318" : "#666", fontSize: 13 }}>
+        <div style={{ marginTop: 8, color: kErr ? "#b42318" : "#5d6f8f", fontSize: 13 }}>
           {loadingSummary ? "加载行情..." : summaryErr ? `行情失败：${summaryErr}` : ""}
           {loadingK ? " · 加载K线..." : kErr ? ` · K线失败：${kErr}` : ""}
         </div>
@@ -141,15 +141,8 @@ export default function StockSidebar({
 }
 
 const styles = {
-  side: { width: 360, minWidth: 320, background: "white", border: "1px solid #e9e9ee", borderRadius: 12, padding: 14 },
-  kpi: { padding: "8px 10px", border: "1px solid #f0f0f0", borderRadius: 10, background: "#fafafa", minWidth: 110 },
-  k: { color: "#666", fontSize: 12 },
-  v: { fontWeight: 900, fontSize: 18, marginTop: 2 },
   row: { display: "flex", justifyContent: "space-between", gap: 10, alignItems: "baseline" },
-  label: { color: "#666", fontSize: 13 },
+  label: { color: "#5d6f8f", fontSize: 13 },
   value: { fontWeight: 900, fontSize: 14 },
-  sub: { marginLeft: 6, color: "#666", fontSize: 12, fontWeight: 700 },
-  btn: { padding: "8px 10px", borderRadius: 10, border: "1px solid #ddd", background: "white", cursor: "pointer", fontWeight: 800 },
-  btnYellow: { padding: "8px 16px", borderRadius: 10, border: "1px solid #ddd", background: "#ffd54a", cursor: "pointer", fontWeight: 900 },
-  select: { padding: "8px 10px", borderRadius: 10, border: "1px solid #ddd", background: "white", cursor: "pointer" },
+  sub: { marginLeft: 6, color: "#5d6f8f", fontSize: 12, fontWeight: 700 },
 };

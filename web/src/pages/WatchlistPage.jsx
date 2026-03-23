@@ -192,7 +192,9 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
       {searchErr ? <div style={{ color: "#b42318", fontSize: 13 }}>{searchErr}</div> : null}
 
       {list.length === 0 ? (
-        <div style={styles.muted}>监控列表为空：你可以在这里搜索添加，或在“搜索页”点击“监控”按钮加入。</div>
+        <div className="alerts-card muted" style={{ fontSize: 14 }}>
+          监控列表为空：你可以在这里搜索添加，或在“搜索页”点击“监控”按钮加入。
+        </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {list.map((it, idx) => {
@@ -228,7 +230,3 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
     </div>
   );
 }
-
-const styles = {
-  muted: { color: "#666", fontSize: 13, marginTop: 8 },
-};

@@ -1,10 +1,38 @@
 #!/bin/bash
 
-# Script to stop the frontend service
+set -euo pipefail
 
-echo "Stopping frontend service..."
+PROJECT_DIR="/proj/stock_project"
+RUN_DIR="$PROJECT_DIR/.run"
+PID_FILE="$RUN_DIR/frontend.pid"
+PORT="5173"
 
-# Kill the frontend process (assuming it's running with vite)
-pkill -f "vite"
+stopped="0"
 
-echo "Frontend service stopped."
+if [ -f "$PID_FILE" ]; then
+	PID="$(cat "$PID_FILE" 2>/dev/null || true)"
+	if [ -n "$PID" ] && kill -0 "$PID" 2>/dev/null; then
+		echo "Stopping frontend (PID: $PID)"
+		kill "$PID" 2>/dev/null || true
+		sleep 1
+		if kill -0 "$PID" 2>/dev/null; then
+			kill -9 "$PID" 2>/dev/null || true
+		fi
+		stopped="1"
+	fi
+fi
+
+PORT_PIDS="$(lsof -ti:"$PORT" 2>/dev/null || true)"
+if [ -n "$PORT_PIDS" ]; then
+	echo "Cleaning frontend pids on port $PORT: $PORT_PIDS"
+	echo "$PORT_PIDS" | xargs -r kill -9 2>/dev/null || true
+	stopped="1"
+fi
+
+rm -f "$PID_FILE"
+
+if [ "$stopped" = "1" ]; then
+	echo "Frontend stopped."
+else
+	echo "Frontend was not running."
+fi

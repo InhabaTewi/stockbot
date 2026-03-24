@@ -17,6 +17,7 @@ export default function SearchPage({ onAddWatch }) {
 
   const [q, setQ] = useState(cached?.q ?? "");
   const dq = useDebouncedValue(q, 250);
+  const [source, setSource] = useState(cached?.source ?? "normal");
 
   const [candidates, setCandidates] = useState([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
@@ -42,6 +43,7 @@ export default function SearchPage({ onAddWatch }) {
 
   // persist
   useEffect(() => saveState(LS_PAGE, { q }), [q]);
+  useEffect(() => saveState(LS_PAGE, { source }), [source]);
   useEffect(() => saveState(LS_PAGE, { selected }), [selected]);
   useEffect(() => saveState(LS_PAGE, { tf }), [tf]);
   useEffect(() => saveState(LS_PAGE, { range }), [range]);
@@ -58,7 +60,7 @@ export default function SearchPage({ onAddWatch }) {
   const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
   async function loadSummary(sym) {
-    const key = `summary_${sym}`;
+    const key = `summary_${source}_${sym}`;
     const cached = cacheRef.current[key];
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
       setSummary(cached.data);
@@ -68,7 +70,7 @@ export default function SearchPage({ onAddWatch }) {
     setSummaryErr("");
     setLoadingSummary(true);
     try {
-      const data = await apiGet("/api/summary", { symbol: sym });
+      const data = await apiGet("/api/summary", { symbol: sym, source });
       setSummary(data);
       cacheRef.current[key] = { data, timestamp: Date.now() };
     } catch (e) {
@@ -79,7 +81,7 @@ export default function SearchPage({ onAddWatch }) {
   }
 
   async function loadKline(sym, tf0, range0) {
-    const key = `kline_${sym}_${tf0}_${range0}`;
+    const key = `kline_${source}_${sym}_${tf0}_${range0}`;
     const cached = cacheRef.current[key];
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
       setKBars(cached.data || []);
@@ -89,7 +91,7 @@ export default function SearchPage({ onAddWatch }) {
     setKErr("");
     setLoadingK(true);
     try {
-      const data = await apiGet("/api/kline", { symbol: sym, tf: tf0, range: range0 });
+      const data = await apiGet("/api/kline", { symbol: sym, tf: tf0, range: range0, source });
       const bars = data.bars || [];
       setKBars(bars);
       cacheRef.current[key] = { data: bars, timestamp: Date.now() };
@@ -117,7 +119,7 @@ export default function SearchPage({ onAddWatch }) {
       }
       setLoadingSearch(true);
       try {
-        const data = await apiGet("/api/search", { q: query });
+        const data = await apiGet("/api/search", { q: query, source });
         const items = (data.items || []).slice().sort((a, b) => rankHKItem(a) - rankHKItem(b));
         if (!cancelled) setCandidates(items);
       } catch (e) {
@@ -127,7 +129,7 @@ export default function SearchPage({ onAddWatch }) {
       }
     })();
     return () => (cancelled = true);
-  }, [dq]);
+  }, [dq, source]);
 
   function selectItem(it, { resetDefault = true } = {}) {
     setSelected(it);
@@ -154,7 +156,7 @@ export default function SearchPage({ onAddWatch }) {
     setSearchErr("");
     setLoadingSearch(true);
     try {
-      const data = await apiGet("/api/search", { q: query });
+      const data = await apiGet("/api/search", { q: query, source });
       const items = (data.items || []).slice().sort((a, b) => rankHKItem(a) - rankHKItem(b));
       setCandidates(items);
       if (items.length > 0) selectItem(items[0], { resetDefault: true });
@@ -212,6 +214,13 @@ export default function SearchPage({ onAddWatch }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symbol, tf, range]);
 
+  // reload when source mode changes
+  useEffect(() => {
+    if (!symbol) return;
+    Promise.all([loadSummary(symbol), loadKline(symbol, tf, range)]).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [source]);
+
   const chartTitle = symbol ? `${buildDisplay(selected)} · ${tf} · ${range}` : "K线";
   const option = useMemo(() => makeChartOption(chartTitle, kBars, chartMode), [chartTitle, kBars, chartMode]);
 
@@ -220,6 +229,18 @@ export default function SearchPage({ onAddWatch }) {
       <StockHeader
         q={q}
         setQ={setQ}
+        source={source}
+        onChangeSource={(v) => {
+          setSource(v);
+          cacheRef.current = {};
+          setCandidates([]);
+          if (selected?.symbol) {
+            setSummary(null);
+            setKBars([]);
+            setSummaryErr("");
+            setKErr("");
+          }
+        }}
         onEnter={() => directSelect(q)}
         onDirect={() => directSelect(q)}
         onRefresh={refreshNow}
@@ -232,12 +253,13 @@ export default function SearchPage({ onAddWatch }) {
       <CandidateList
         items={candidates}
         onPick={(it) => selectItem(it, { resetDefault: true })}
-        onAddWatch={(it) => onAddWatch(it)}
+        onAddWatch={(it) => onAddWatch({ ...it, mode: source })}
       />
 
       <div className="layout-main">
         <StockSidebar
           selected={selected}
+          source={source}
           summary={summary}
           loadingSummary={loadingSummary}
           summaryErr={summaryErr}

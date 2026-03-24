@@ -10,14 +10,27 @@ import { buildDisplay } from "./utils/format";
 const LS_APP = "stock_project_app_v1";
 const LS_WATCH = "stock_project_watchlist_v1";
 
+function normalizeWatchItem(it) {
+  if (!it) return it;
+  const mode = it.mode || (it.source === "wencai" ? "caifutong" : "normal");
+  return { ...it, mode };
+}
+
+function watchItemKey(it) {
+  const symbol = it?.symbol;
+  const mode = it?.mode || "normal";
+  return symbol ? `${symbol}::${mode}` : "";
+}
+
 function uniqueBySymbol(items) {
   const seen = new Set();
   const out = [];
   for (const it of items) {
-    const k = it?.symbol;
+    const n = normalizeWatchItem(it);
+    const k = watchItemKey(n);
     if (!k || seen.has(k)) continue;
     seen.add(k);
-    out.push(it);
+    out.push(n);
   }
   return out;
 }
@@ -33,8 +46,10 @@ export default function App() {
 
   function addToWatch(it) {
     if (!it?.symbol) return;
-    setWatchItems((prev) => uniqueBySymbol([...(prev || []), it]));
-    alert(`${buildDisplay(it)} 已添加至监控列表`);
+    const item = normalizeWatchItem(it);
+    setWatchItems((prev) => uniqueBySymbol([...(prev || []), item]));
+    const modeText = item.mode === "caifutong" ? "财付通模式" : "普通模式";
+    alert(`${buildDisplay(item)}（${modeText}）已添加至监控列表`);
     // 你也可以在加入后自动跳到监控页：setTab("watch")
   }
 

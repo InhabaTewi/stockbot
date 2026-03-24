@@ -11,6 +11,7 @@ from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
 from .tencent_finance import fetch_intraday_minute_bars, fetch_quote
+from . import wencai_provider
 
 # -------------------------
 # Load .env (VERY IMPORTANT)
@@ -166,12 +167,20 @@ def db_search_hk(q: str, limit: int = 10) -> List[Dict[str, Any]]:
     if not q:
         return []
 
+    # 支持 0700.HK / 700.HK / hk00700 这类输入，统一提取数字代码用于本地检索
+    q_code = q
+    q_upper = q.upper()
+    if q_upper.endswith(".HK"):
+        q_code = q_upper[:-3]
+    elif q_upper.startswith("HK") and q_upper[2:].isdigit():
+        q_code = q_upper[2:]
+
     conn = db_conn()
     cur = conn.cursor(dictionary=True)
 
     try:
         # 1) 代码输入：1810 / 01810
-        if q.isdigit():
+        if q_code.isdigit():
             cur.execute(
                 """
                 SELECT stock_code, stock_name, market
@@ -180,7 +189,7 @@ def db_search_hk(q: str, limit: int = 10) -> List[Dict[str, Any]]:
                   AND (stock_code=%s OR stock_code=LPAD(%s,5,'0'))
                 LIMIT %s
                 """,
-                (q, q, limit),
+                (q_code, q_code, limit),
             )
             rows = cur.fetchall()
             if rows:
@@ -347,6 +356,25 @@ def high_6m_1y_2y(symbol: str) -> dict:
     }
 
 
+TF = Literal["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1d", "1wk", "1mo"]
+SourceMode = Literal["normal", "caifutong"]
+
+
+def _merge_items(primary: List[Dict[str, Any]], secondary: List[Dict[str, Any]], limit: int = 10) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    seen = set()
+    for src in (primary, secondary):
+        for it in src:
+            k = str(it.get("symbol") or "").upper()
+            if not k or k in seen:
+                continue
+            seen.add(k)
+            out.append(it)
+            if len(out) >= limit:
+                return out
+    return out
+
+
 # -------------------------
 # Routes
 # -------------------------
@@ -356,7 +384,7 @@ def root():
 
 
 @app.get("/api/search")
-def search(q: str = Query(..., min_length=1)):
+def search(q: str = Query(..., min_length=1), source: SourceMode = "normal"):
     rows = db_search_hk(q, limit=10)
     items = []
     for r in rows:
@@ -369,23 +397,34 @@ def search(q: str = Query(..., min_length=1)):
                 "exchange": r["market"],
                 "type": "Equity",
                 "stock_code": r["stock_code"],
+                "source": source,
             }
         )
-    return {"items": items}
-
-
-TF = Literal["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1d", "1wk", "1mo"]
-
+    return {"items": items, "source": source}
 
 @app.get("/api/kline")
-def kline(symbol: str, tf: TF = "1d", range_: str = Query(None, alias="range"), start: int = None, end: int = None):
+def kline(
+    symbol: str,
+    tf: TF = "1d",
+    range_: str = Query(None, alias="range"),
+    start: int = None,
+    end: int = None,
+    source: SourceMode = "normal",
+):
     symbol = normalize_yahoo_symbol(symbol)
     try:
         # Tencent: intraday minute bars (real-time) for the most common case
         if tf == "1m" and (range_ or "").lower() == "1d" and not (start or end):
             try:
                 bars = fetch_intraday_minute_bars(symbol)
-                return {"symbol": symbol, "tf": tf, "range": range_, "bars": bars}
+                return {
+                    "symbol": symbol,
+                    "tf": tf,
+                    "range": range_,
+                    "bars": bars,
+                    "source": source,
+                    "klineSource": "tencent",
+                }
             except Exception:
                 # fallback to Yahoo below
                 pass
@@ -410,16 +449,61 @@ def kline(symbol: str, tf: TF = "1d", range_: str = Query(None, alias="range"), 
                     int(row["Volume"]) if pd.notna(row["Volume"]) else 0,
                 ]
             )
-        return {"symbol": symbol, "tf": tf, "range": range_, "bars": bars}
+        return {
+            "symbol": symbol,
+            "tf": tf,
+            "range": range_,
+            "bars": bars,
+            "source": source,
+            "klineSource": "yahoo",
+        }
     except Exception as e:
         # 如果Yahoo API失败，返回空数据而不是500错误
-        return {"symbol": symbol, "tf": tf, "range": range_, "bars": [], "error": str(e)}
+        return {
+            "symbol": symbol,
+            "tf": tf,
+            "range": range_,
+            "bars": [],
+            "source": source,
+            "klineSource": "error",
+            "error": str(e),
+        }
 
 
 @app.get("/api/summary")
-def summary(symbol: str):
+def summary(symbol: str, source: SourceMode = "normal"):
     symbol = normalize_yahoo_symbol(symbol)
     try:
+        if source == "caifutong":
+            wq = wencai_provider.fetch_quote(symbol)
+            highs = high_6m_1y_2y(symbol)
+            if wq is not None:
+                return {
+                    "symbol": symbol,
+                    **wq.to_api_dict(),
+                    **highs,
+                    "source": source,
+                    "quoteSource": "wencai",
+                    "historySource": "yahoo",
+                }
+            return {
+                "symbol": symbol,
+                "price": None,
+                "prevClose": None,
+                "previousClose": None,
+                "change": None,
+                "pctChange": None,
+                "currency": "HKD",
+                "exchangeName": "HK",
+                "regularMarketTime": None,
+                "calcSource": "wencai",
+                **highs,
+                "source": source,
+                "quoteSource": "wencai",
+                "historySource": "yahoo",
+                "error": "wencai no data",
+            }
+
         # Prefer Tencent for real-time latest price; use Yahoo for the rest.
         info = None
         try:
@@ -432,7 +516,14 @@ def summary(symbol: str):
             info["previousClose"] = info.get("prevClose")
 
         highs = high_6m_1y_2y(symbol)
-        return {"symbol": symbol, **info, **highs}
+        return {
+            "symbol": symbol,
+            **info,
+            **highs,
+            "source": source,
+            "quoteSource": "tencent_or_yahoo",
+            "historySource": "yahoo",
+        }
     except Exception as e:
         # 如果Yahoo API失败，返回默认数据而不是500错误
         return {
@@ -452,5 +543,6 @@ def summary(symbol: str):
             "low1y": None,
             "high2y": None,
             "low2y": None,
+            "source": source,
             "error": str(e)
         }

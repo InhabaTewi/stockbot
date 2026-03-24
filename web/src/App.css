@@ -192,6 +192,39 @@ body {
   padding: 16px;
 }
 
+.source-switch-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.source-switch-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.source-chip {
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #234270;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.source-chip.active {
+  border-color: transparent;
+  color: #fff;
+  background: linear-gradient(135deg, #0b87ff, #0a6fd1 60%, #19a5ff);
+  box-shadow: 0 8px 20px rgba(11, 135, 255, 0.28);
+}
+
 .search-header-row {
   display: flex;
   gap: 10px;
@@ -221,6 +254,37 @@ body {
   display: flex;
   gap: 14px;
   align-items: stretch;
+}
+
+.layout-main > .stock-chart-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.layout-main > .sidebar-card {
+  flex: 0 0 auto;
+}
+
+.watch-mode-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.watch-mode-tag.is-normal {
+  color: #1f4c7d;
+  background: rgba(11, 135, 255, 0.12);
+  border: 1px solid rgba(11, 135, 255, 0.25);
+}
+
+.watch-mode-tag.is-caifutong {
+  color: #5f3a00;
+  background: rgba(255, 176, 46, 0.18);
+  border: 1px solid rgba(255, 176, 46, 0.4);
 }
 
 .sidebar-card,
@@ -379,6 +443,11 @@ body {
 @media (max-width: 1100px) {
   .layout-main {
     flex-direction: column;
+  }
+
+  .layout-main > .sidebar-card {
+    width: 100% !important;
+    min-width: 0 !important;
   }
 }
 

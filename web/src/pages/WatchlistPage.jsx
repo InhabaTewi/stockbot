@@ -8,14 +8,27 @@ import { normalizeQuery, rankHKItem } from "../utils/search";
 
 const LS_WATCH = "stock_project_watchlist_v1";
 
+function normalizeWatchItem(it) {
+  if (!it) return it;
+  const mode = it.mode || (it.source === "wencai" ? "caifutong" : "normal");
+  return { ...it, mode };
+}
+
+function watchItemKey(it) {
+  const symbol = it?.symbol;
+  const mode = it?.mode || "normal";
+  return symbol ? `${symbol}::${mode}` : "";
+}
+
 function uniqueBySymbol(items) {
   const seen = new Set();
   const out = [];
   for (const it of items) {
-    const k = it?.symbol;
+    const n = normalizeWatchItem(it);
+    const k = watchItemKey(n);
     if (!k || seen.has(k)) continue;
     seen.add(k);
-    out.push(it);
+    out.push(n);
   }
   return out;
 }
@@ -52,8 +65,11 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
 
   // 顶部添加搜索
   const [q, setQ] = useState("");
+  const [watchSource, setWatchSource] = useState(() => getValue(`${LS_WATCH}:source`, "normal"));
   const dq = useDebouncedValue(q, 250);
   const [searchErr, setSearchErr] = useState("");
+
+  useEffect(() => setValue(`${LS_WATCH}:source`, watchSource), [watchSource]);
 
   // 自动：监控列表里股票定时刷新 summary（20s）
   useEffect(() => {
@@ -61,7 +77,7 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
     const t = setInterval(() => {
       watchItems.forEach((it) => {
         if (!it?.symbol) return;
-        refreshOne(it.symbol, { summaryOnly: true }).catch(() => {});
+        refreshOne(it, { summaryOnly: true }).catch(() => {});
       });
     }, 20000);
     return () => clearInterval(t);
@@ -71,76 +87,81 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
   // 初始：加载 watchItems 的 summary
   useEffect(() => {
     if (!watchItems || watchItems.length === 0) return;
-    watchItems.forEach((it) => it?.symbol && refreshOne(it.symbol, { summaryOnly: true }).catch(() => {}));
+    watchItems.forEach((it) => it?.symbol && refreshOne(it, { summaryOnly: true }).catch(() => {}));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchItems?.length]);
 
-  async function refreshOne(symbol, { summaryOnly = false } = {}) {
-    setLoadingMap((m) => ({ ...m, [symbol]: true }));
+  async function refreshOne(item, { summaryOnly = false } = {}) {
+    const symbol = item.symbol;
+    const mode = item.mode || "normal";
+    const key = watchItemKey(item);
+    setLoadingMap((m) => ({ ...m, [key]: true }));
     try {
-      const s = await apiGet("/api/summary", { symbol });
-      setSummaryMap((m) => ({ ...m, [symbol]: s }));
-      if (!summaryOnly && expandedMapRef.current?.[symbol]) {
-        const tf = tfMapRef.current[symbol] || "1m";
-        const range = rangeMapRef.current[symbol] || (tf === "1d" ? "4mo" : "1d");
-        const k = await apiGet("/api/kline", { symbol, tf, range });
-        setKlineMap((m) => ({ ...m, [symbol]: k.bars || [] }));
+      const s = await apiGet("/api/summary", { symbol, source: mode });
+      setSummaryMap((m) => ({ ...m, [key]: s }));
+      if (!summaryOnly && expandedMapRef.current?.[key]) {
+        const tf = tfMapRef.current[key] || "1m";
+        const range = rangeMapRef.current[key] || (tf === "1d" ? "4mo" : "1d");
+        const k = await apiGet("/api/kline", { symbol, tf, range, source: mode });
+        setKlineMap((m) => ({ ...m, [key]: k.bars || [] }));
       }
     } finally {
-      setLoadingMap((m) => ({ ...m, [symbol]: false }));
+      setLoadingMap((m) => ({ ...m, [key]: false }));
     }
   }
 
   async function toggleExpand(it) {
-    const symbol = it.symbol;
-    const next = !expandedMapRef.current?.[symbol];
-    setExpandedMap((m) => ({ ...m, [symbol]: next }));
+    const key = watchItemKey(it);
+    const next = !expandedMapRef.current?.[key];
+    setExpandedMap((m) => ({ ...m, [key]: next }));
 
     // 展开时立即拉一次 kline
     if (next) {
-      setLoadingMap((m) => ({ ...m, [symbol]: true }));
+      setLoadingMap((m) => ({ ...m, [key]: true }));
       try {
-        const tf = tfMapRef.current[symbol] || "1m";
-        const range = rangeMapRef.current[symbol] || (tf === "1d" ? "4mo" : "1d");
-        const k = await apiGet("/api/kline", { symbol, tf, range });
-        setKlineMap((m) => ({ ...m, [symbol]: k.bars || [] }));
+        const tf = tfMapRef.current[key] || "1m";
+        const range = rangeMapRef.current[key] || (tf === "1d" ? "4mo" : "1d");
+        const k = await apiGet("/api/kline", { symbol: it.symbol, tf, range, source: it.mode || "normal" });
+        setKlineMap((m) => ({ ...m, [key]: k.bars || [] }));
       } catch {
         // ignore
       } finally {
-        setLoadingMap((m) => ({ ...m, [symbol]: false }));
+        setLoadingMap((m) => ({ ...m, [key]: false }));
       }
     }
   }
 
-  function removeOne(symbol) {
-    const next = (watchItems || []).filter((x) => x.symbol !== symbol);
+  function removeOne(item) {
+    const key = watchItemKey(item);
+    const next = (watchItems || []).filter((x) => watchItemKey(x) !== key);
     setWatchItems(next);
     setExpandedMap((m) => {
       const mm = { ...m };
-      delete mm[symbol];
+      delete mm[key];
       return mm;
     });
   }
 
-  async function toggleTf(symbol) {
-    const current = tfMapRef.current[symbol] || "1m";
+  async function toggleTf(item) {
+    const key = watchItemKey(item);
+    const current = tfMapRef.current[key] || "1m";
     const next = current === "1m" ? "1d" : "1m";
-    setTfMap((m) => ({ ...m, [symbol]: next }));
+    setTfMap((m) => ({ ...m, [key]: next }));
 
     // 设置对应的range
     const nextRange = next === "1d" ? "4mo" : "1d";
-    setRangeMap((m) => ({ ...m, [symbol]: nextRange }));
+    setRangeMap((m) => ({ ...m, [key]: nextRange }));
 
     // 如果展开了，重新加载k线
-    if (expandedMapRef.current?.[symbol]) {
-      setLoadingMap((m) => ({ ...m, [symbol]: true }));
+    if (expandedMapRef.current?.[key]) {
+      setLoadingMap((m) => ({ ...m, [key]: true }));
       try {
-        const k = await apiGet("/api/kline", { symbol, tf: next, range: nextRange });
-        setKlineMap((m) => ({ ...m, [symbol]: k.bars || [] }));
+        const k = await apiGet("/api/kline", { symbol: item.symbol, tf: next, range: nextRange, source: item.mode || "normal" });
+        setKlineMap((m) => ({ ...m, [key]: k.bars || [] }));
       } catch {
         // ignore
       } finally {
-        setLoadingMap((m) => ({ ...m, [symbol]: false }));
+        setLoadingMap((m) => ({ ...m, [key]: false }));
       }
     }
   }
@@ -152,13 +173,13 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
     if (!query) return;
 
     try {
-      const data = await apiGet("/api/search", { q: query });
+      const data = await apiGet("/api/search", { q: query, source: watchSource });
       const items = (data.items || []).slice().sort((a, b) => rankHKItem(a) - rankHKItem(b));
       if (items.length === 0) {
         setSearchErr("未找到匹配股票");
         return;
       }
-      const pick = items[0];
+      const pick = normalizeWatchItem({ ...items[0], mode: watchSource });
       const next = uniqueBySymbol([...(watchItems || []), pick]);
       setWatchItems(next);
       setQ("");
@@ -188,7 +209,7 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <WatchlistHeader q={q} setQ={setQ} onAddTop={addTop} />
+      <WatchlistHeader q={q} setQ={setQ} onAddTop={addTop} source={watchSource} onChangeSource={setWatchSource} />
       {searchErr ? <div style={{ color: "#b42318", fontSize: 13 }}>{searchErr}</div> : null}
 
       {list.length === 0 ? (
@@ -198,11 +219,11 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {list.map((it, idx) => {
-            const sym = it.symbol;
-            const expanded = !!expandedMap[sym];
+            const key = watchItemKey(it);
+            const expanded = !!expandedMap[key];
             return (
               <div
-                key={sym}
+                key={key}
                 draggable
                 onDragStart={() => onDragStart(idx)}
                 onDragOver={(e) => e.preventDefault()}
@@ -210,16 +231,16 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
               >
                 <WatchlistCard
                   item={it}
-                  summary={summaryMap[sym]}
-                  kBars={klineMap[sym]}
-                  loading={!!loadingMap[sym]}
+                  summary={summaryMap[key]}
+                  kBars={klineMap[key]}
+                  loading={!!loadingMap[key]}
                   expanded={expanded}
-                  tf={tfMap[sym] || "1m"}
-                  range={rangeMap[sym] || ((tfMap[sym] || "1m") === "1d" ? "4mo" : "1d")}
+                  tf={tfMap[key] || "1m"}
+                  range={rangeMap[key] || ((tfMap[key] || "1m") === "1d" ? "4mo" : "1d")}
                   onToggle={() => toggleExpand(it)}
-                  onToggleTf={() => toggleTf(sym)}
-                  onRemove={() => removeOne(sym)}
-                  onRefreshOne={() => refreshOne(sym, { summaryOnly: false })}
+                  onToggleTf={() => toggleTf(it)}
+                  onRemove={() => removeOne(it)}
+                  onRefreshOne={() => refreshOne(it, { summaryOnly: false })}
                   dragProps={{ title: "拖拽排序：按住卡片拖动" }}
                 />
               </div>

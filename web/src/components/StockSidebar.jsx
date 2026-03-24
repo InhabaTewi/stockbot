@@ -28,6 +28,7 @@ function ratioPct(price, high) {
 
 export default function StockSidebar({
   selected,
+  source,
   summary,
   loadingSummary,
   summaryErr,
@@ -50,9 +51,11 @@ export default function StockSidebar({
 
   const pct6 = summary?.pctOfHigh6m ?? ratioPct(price, summary?.high6m);
   const pct1y = summary?.pctOfHigh1y ?? ratioPct(price, summary?.high1y);
+  const quoteSource = summary?.quoteSource || summary?.calcSource || "--";
+  const historySource = summary?.historySource || "--";
 
   return (
-    <div className="sidebar-card" style={{ width: 360, minWidth: 320 }}>
+    <div className="sidebar-card" style={{ width: "clamp(260px, 28vw, 360px)", minWidth: 260 }}>
       <div style={{ fontWeight: 900, fontSize: 16 }}>{buildDisplay(selected)}</div>
 
       <div className="kpi-grid">
@@ -101,6 +104,17 @@ export default function StockSidebar({
 
       <div style={{ marginTop: 14, borderTop: "1px solid rgba(32, 74, 130, 0.14)", paddingTop: 12 }}>
         <div style={{ fontWeight: 900, marginBottom: 8 }}>K线</div>
+
+        {source === "caifutong" ? (
+          <div style={{ marginBottom: 8, fontSize: 12, color: "#5d6f8f", lineHeight: 1.5 }}>
+            财付通模式说明：实时报价来自财付通（问财）；历史 K 线和历史高低点与普通模式一致。
+            当前来源：报价 {quoteSource}，历史 {historySource}。
+          </div>
+        ) : (
+          <div style={{ marginBottom: 8, fontSize: 12, color: "#5d6f8f", lineHeight: 1.5 }}>
+            普通模式来源：报价 {quoteSource}，历史 {historySource}。
+          </div>
+        )}
 
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button className="stock-button" style={{ padding: "8px 10px" }} onClick={() => setTf("1m")}>分K</button>

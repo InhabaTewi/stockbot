@@ -4,8 +4,6 @@ import React from "react";
 export default function StockHeader({
   q,
   setQ,
-  source,
-  onChangeSource,
   onEnter,
   onDirect,
   onRefresh,
@@ -16,24 +14,6 @@ export default function StockHeader({
 }) {
   return (
     <div className="glass-card search-header">
-      <div className="source-switch-wrap">
-        <span className="source-switch-label">数据来源</span>
-        <button
-          className={`source-chip ${source === "normal" ? "active" : ""}`}
-          onClick={() => onChangeSource?.("normal")}
-          type="button"
-        >
-          普通模式
-        </button>
-        <button
-          className={`source-chip ${source === "caifutong" ? "active" : ""}`}
-          onClick={() => onChangeSource?.("caifutong")}
-          type="button"
-        >
-          财付通模式
-        </button>
-      </div>
-
       <div className="search-header-row">
         <input
           value={q}

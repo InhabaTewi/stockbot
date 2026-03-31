@@ -1,23 +1,32 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import WatchlistHeader from "../components/Watchlist/WatchlistHeader";
 import WatchlistCard from "../components/Watchlist/WatchlistCard";
-import { useDebouncedValue } from "../hooks/useDebouncedValue";
 import { apiGet } from "../services/api";
 import { getValue, setValue } from "../utils/storage";
 import { normalizeQuery, rankHKItem } from "../utils/search";
 
 const LS_WATCH = "stock_project_watchlist_v1";
+const WATCH_MODE = "caifutong";
+
+function migrateKeyMap(map) {
+  if (!map || typeof map !== "object") return {};
+  const out = {};
+  for (const [k, v] of Object.entries(map)) {
+    const symbol = String(k).split("::")[0];
+    if (!symbol) continue;
+    if (out[symbol] === undefined) out[symbol] = v;
+  }
+  return out;
+}
 
 function normalizeWatchItem(it) {
   if (!it) return it;
-  const mode = it.mode || (it.source === "wencai" ? "caifutong" : "normal");
-  return { ...it, mode };
+  return { ...it, mode: WATCH_MODE };
 }
 
 function watchItemKey(it) {
   const symbol = it?.symbol;
-  const mode = it?.mode || "normal";
-  return symbol ? `${symbol}::${mode}` : "";
+  return symbol ? String(symbol) : "";
 }
 
 function uniqueBySymbol(items) {
@@ -35,7 +44,7 @@ function uniqueBySymbol(items) {
 
 export default function WatchlistPage({ watchItems, setWatchItems }) {
   // 展开状态：symbol -> bool（也持久化）
-  const [expandedMap, setExpandedMap] = useState(() => getValue(`${LS_WATCH}:expanded`, {}));
+  const [expandedMap, setExpandedMap] = useState(() => migrateKeyMap(getValue(`${LS_WATCH}:expanded`, {})));
   const expandedMapRef = useRef(expandedMap);
   useEffect(() => {
     expandedMapRef.current = expandedMap;
@@ -43,7 +52,7 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
   }, [expandedMap]);
 
   // k线类型：symbol -> "1m" | "1d"（默认分k线）
-  const [tfMap, setTfMap] = useState(() => getValue(`${LS_WATCH}:tf`, {}));
+  const [tfMap, setTfMap] = useState(() => migrateKeyMap(getValue(`${LS_WATCH}:tf`, {})));
   const tfMapRef = useRef(tfMap);
   useEffect(() => {
     tfMapRef.current = tfMap;
@@ -51,7 +60,7 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
   }, [tfMap]);
 
   // k线范围：symbol -> range（默认分k线1d，日k线4mo）
-  const [rangeMap, setRangeMap] = useState(() => getValue(`${LS_WATCH}:range`, {}));
+  const [rangeMap, setRangeMap] = useState(() => migrateKeyMap(getValue(`${LS_WATCH}:range`, {})));
   const rangeMapRef = useRef(rangeMap);
   useEffect(() => {
     rangeMapRef.current = rangeMap;
@@ -65,11 +74,7 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
 
   // 顶部添加搜索
   const [q, setQ] = useState("");
-  const [watchSource, setWatchSource] = useState(() => getValue(`${LS_WATCH}:source`, "normal"));
-  const dq = useDebouncedValue(q, 250);
   const [searchErr, setSearchErr] = useState("");
-
-  useEffect(() => setValue(`${LS_WATCH}:source`, watchSource), [watchSource]);
 
   // 自动：监控列表里股票定时刷新 summary（20s）
   useEffect(() => {
@@ -81,28 +86,25 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
       });
     }, 20000);
     return () => clearInterval(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchItems]);
 
   // 初始：加载 watchItems 的 summary
   useEffect(() => {
     if (!watchItems || watchItems.length === 0) return;
     watchItems.forEach((it) => it?.symbol && refreshOne(it, { summaryOnly: true }).catch(() => {}));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watchItems?.length]);
+  }, [watchItems]);
 
   async function refreshOne(item, { summaryOnly = false } = {}) {
     const symbol = item.symbol;
-    const mode = item.mode || "normal";
     const key = watchItemKey(item);
     setLoadingMap((m) => ({ ...m, [key]: true }));
     try {
-      const s = await apiGet("/api/summary", { symbol, source: mode });
+      const s = await apiGet("/api/summary", { symbol });
       setSummaryMap((m) => ({ ...m, [key]: s }));
       if (!summaryOnly && expandedMapRef.current?.[key]) {
         const tf = tfMapRef.current[key] || "1m";
         const range = rangeMapRef.current[key] || (tf === "1d" ? "4mo" : "1d");
-        const k = await apiGet("/api/kline", { symbol, tf, range, source: mode });
+        const k = await apiGet("/api/kline", { symbol, tf, range });
         setKlineMap((m) => ({ ...m, [key]: k.bars || [] }));
       }
     } finally {
@@ -121,7 +123,7 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
       try {
         const tf = tfMapRef.current[key] || "1m";
         const range = rangeMapRef.current[key] || (tf === "1d" ? "4mo" : "1d");
-        const k = await apiGet("/api/kline", { symbol: it.symbol, tf, range, source: it.mode || "normal" });
+        const k = await apiGet("/api/kline", { symbol: it.symbol, tf, range });
         setKlineMap((m) => ({ ...m, [key]: k.bars || [] }));
       } catch {
         // ignore
@@ -156,7 +158,7 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
     if (expandedMapRef.current?.[key]) {
       setLoadingMap((m) => ({ ...m, [key]: true }));
       try {
-        const k = await apiGet("/api/kline", { symbol: item.symbol, tf: next, range: nextRange, source: item.mode || "normal" });
+        const k = await apiGet("/api/kline", { symbol: item.symbol, tf: next, range: nextRange });
         setKlineMap((m) => ({ ...m, [key]: k.bars || [] }));
       } catch {
         // ignore
@@ -173,13 +175,13 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
     if (!query) return;
 
     try {
-      const data = await apiGet("/api/search", { q: query, source: watchSource });
+      const data = await apiGet("/api/search", { q: query });
       const items = (data.items || []).slice().sort((a, b) => rankHKItem(a) - rankHKItem(b));
       if (items.length === 0) {
         setSearchErr("未找到匹配股票");
         return;
       }
-      const pick = normalizeWatchItem({ ...items[0], mode: watchSource });
+      const pick = normalizeWatchItem(items[0]);
       const next = uniqueBySymbol([...(watchItems || []), pick]);
       setWatchItems(next);
       setQ("");
@@ -205,11 +207,11 @@ export default function WatchlistPage({ watchItems, setWatchItems }) {
     setWatchItems(arr);
   }
 
-  const list = useMemo(() => watchItems || [], [watchItems]);
+  const list = useMemo(() => uniqueBySymbol(watchItems || []), [watchItems]);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <WatchlistHeader q={q} setQ={setQ} onAddTop={addTop} source={watchSource} onChangeSource={setWatchSource} />
+      <WatchlistHeader q={q} setQ={setQ} onAddTop={addTop} />
       {searchErr ? <div style={{ color: "#b42318", fontSize: 13 }}>{searchErr}</div> : null}
 
       {list.length === 0 ? (

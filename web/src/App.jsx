@@ -9,17 +9,16 @@ import { buildDisplay } from "./utils/format";
 
 const LS_APP = "stock_project_app_v1";
 const LS_WATCH = "stock_project_watchlist_v1";
+const WATCH_MODE = "caifutong";
 
 function normalizeWatchItem(it) {
   if (!it) return it;
-  const mode = it.mode || (it.source === "wencai" ? "caifutong" : "normal");
-  return { ...it, mode };
+  return { ...it, mode: WATCH_MODE };
 }
 
 function watchItemKey(it) {
   const symbol = it?.symbol;
-  const mode = it?.mode || "normal";
-  return symbol ? `${symbol}::${mode}` : "";
+  return symbol ? String(symbol) : "";
 }
 
 function uniqueBySymbol(items) {
@@ -39,7 +38,7 @@ export default function App() {
   const cachedApp = useMemo(() => getValue(LS_APP, null), []);
   const [tab, setTab] = useState(cachedApp?.tab ?? "search");
 
-  const [watchItems, setWatchItems] = useState(() => getValue(LS_WATCH, []) || []);
+  const [watchItems, setWatchItems] = useState(() => uniqueBySymbol(getValue(LS_WATCH, []) || []));
 
   useEffect(() => setValue(LS_APP, { tab }), [tab]);
   useEffect(() => setValue(LS_WATCH, watchItems), [watchItems]);
@@ -48,8 +47,7 @@ export default function App() {
     if (!it?.symbol) return;
     const item = normalizeWatchItem(it);
     setWatchItems((prev) => uniqueBySymbol([...(prev || []), item]));
-    const modeText = item.mode === "caifutong" ? "财付通模式" : "普通模式";
-    alert(`${buildDisplay(item)}（${modeText}）已添加至监控列表`);
+    alert(`${buildDisplay(item)}（财付通模式）已添加至监控列表`);
     // 你也可以在加入后自动跳到监控页：setTab("watch")
   }
 

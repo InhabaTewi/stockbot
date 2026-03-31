@@ -47,9 +47,7 @@ export default function WatchlistCard({
       <div style={styles.head}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={styles.title}>{buildDisplay(item)}</div>
-          <div className={`watch-mode-tag ${item?.mode === "caifutong" ? "is-caifutong" : "is-normal"}`}>
-            {item?.mode === "caifutong" ? "财付通模式" : "普通模式"}
-          </div>
+          <div className="watch-mode-tag is-caifutong">财付通模式</div>
         </div>
 
         <div className="kpi-grid" style={{ marginTop: 0 }}>

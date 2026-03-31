@@ -28,12 +28,9 @@ function ratioPct(price, high) {
 
 export default function StockSidebar({
   selected,
-  source,
   summary,
   loadingSummary,
   summaryErr,
-
-  tf,
   setTf,
   range,
   setRange,
@@ -105,16 +102,10 @@ export default function StockSidebar({
       <div style={{ marginTop: 14, borderTop: "1px solid rgba(32, 74, 130, 0.14)", paddingTop: 12 }}>
         <div style={{ fontWeight: 900, marginBottom: 8 }}>K线</div>
 
-        {source === "caifutong" ? (
-          <div style={{ marginBottom: 8, fontSize: 12, color: "#5d6f8f", lineHeight: 1.5 }}>
-            财付通模式说明：实时报价来自财付通（问财）；历史 K 线和历史高低点与普通模式一致。
-            当前来源：报价 {quoteSource}，历史 {historySource}。
-          </div>
-        ) : (
-          <div style={{ marginBottom: 8, fontSize: 12, color: "#5d6f8f", lineHeight: 1.5 }}>
-            普通模式来源：报价 {quoteSource}，历史 {historySource}。
-          </div>
-        )}
+        <div style={{ marginBottom: 8, fontSize: 12, color: "#5d6f8f", lineHeight: 1.5 }}>
+          财付通模式说明：实时报价来自财付通（问财）；历史 K 线和历史高低点与之前一致。
+          当前来源：报价 {quoteSource}，历史 {historySource}。
+        </div>
 
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button className="stock-button" style={{ padding: "8px 10px" }} onClick={() => setTf("1m")}>分K</button>

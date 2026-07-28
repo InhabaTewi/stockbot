@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .tencent_finance import fetch_intraday_minute_bars
 from . import wencai_provider
+from .news_provider import get_news_markets
 
 # -------------------------
 # Load .env (VERY IMPORTANT)
@@ -380,6 +381,11 @@ def _merge_items(primary: List[Dict[str, Any]], secondary: List[Dict[str, Any]],
 @app.get("/")
 def root():
     return {"ok": True, "docs": "/docs"}
+
+
+@app.get("/api/news")
+def news(market: str | None = None):
+    return get_news_markets(market)
 
 
 @app.get("/api/search")

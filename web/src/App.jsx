@@ -4,6 +4,7 @@ import SearchPage from "./pages/SearchPage";
 import WatchlistPage from "./pages/WatchlistPage";
 import ComparePage from "./pages/ComparePage";
 import AlertsPage from "./pages/AlertsPage";
+import NewsPage from "./pages/NewsPage";
 import { getValue, setValue } from "./utils/storage";
 import { buildDisplay } from "./utils/format";
 
@@ -66,6 +67,7 @@ export default function App() {
         {tab === "watch" ? <WatchlistPage watchItems={watchItems} setWatchItems={setWatchItems} /> : null}
         {tab === "compare" ? <ComparePage /> : null}
         {tab === "alerts" ? <AlertsPage /> : null}
+        {tab === "news" ? <NewsPage /> : null}
       </div>
     </div>
   );

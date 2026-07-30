@@ -5,6 +5,7 @@ import WatchlistPage from "./pages/WatchlistPage";
 import ComparePage from "./pages/ComparePage";
 import AlertsPage from "./pages/AlertsPage";
 import NewsPage from "./pages/NewsPage";
+import AdminPage from "./pages/AdminPage";
 import { getValue, setValue } from "./utils/storage";
 import { buildDisplay } from "./utils/format";
 
@@ -68,6 +69,7 @@ export default function App() {
         {tab === "compare" ? <ComparePage /> : null}
         {tab === "alerts" ? <AlertsPage /> : null}
         {tab === "news" ? <NewsPage /> : null}
+        {tab === "admin" ? <AdminPage /> : null}
       </div>
     </div>
   );

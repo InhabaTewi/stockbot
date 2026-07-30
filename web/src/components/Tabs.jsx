@@ -7,6 +7,7 @@ export default function Tabs({ active, onChange }) {
     { k: "compare", label: "比对" },
     { k: "alerts", label: "预警" },
     { k: "news", label: "资讯" },
+    { k: "admin", label: "后台" },
   ];
 
   return (

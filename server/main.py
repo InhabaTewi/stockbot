@@ -1,18 +1,22 @@
 from __future__ import annotations
 
+import logging
 import os
+import threading
 import time
+from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Literal
 
 import pandas as pd
 import requests
 import mysql.connector
-from fastapi import FastAPI, Query
+from fastapi import Body, FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
 from .tencent_finance import fetch_intraday_minute_bars
 from . import wencai_provider
-from .news_provider import get_news_markets
+from .live_news_provider import get_news_articles, sync_news_articles
+from .model_rankings import get_model_rankings, refresh_model_rankings
 
 # -------------------------
 # Load .env (VERY IMPORTANT)
@@ -23,7 +27,60 @@ try:
 except Exception:
     pass
 
-app = FastAPI(title="Stock Project API", version="1.0.2")
+logger = logging.getLogger(__name__)
+
+
+def news_scheduler(stop_event: threading.Event) -> None:
+    interval = max(int(os.getenv("NEWS_SYNC_INTERVAL_SECONDS", "1800")), 300)
+    while not stop_event.wait(interval):
+        try:
+            run_news_pipeline()
+        except Exception:
+            logger.exception("Scheduled stock-news crawl and sync failed")
+
+
+def model_rankings_scheduler(stop_event: threading.Event) -> None:
+    while True:
+        try:
+            result = refresh_model_rankings()
+            if result["errors"]:
+                logger.warning(
+                    "Model-ranking refresh completed with errors: %s", result["errors"]
+                )
+        except Exception:
+            logger.exception("Scheduled model-ranking refresh failed")
+        if stop_event.wait(300):
+            return
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    stop_event = threading.Event()
+    schedulers = [
+        threading.Thread(
+            target=news_scheduler,
+            args=(stop_event,),
+            name="stock-news-scheduler",
+            daemon=True,
+        ),
+        threading.Thread(
+            target=model_rankings_scheduler,
+            args=(stop_event,),
+            name="model-rankings-scheduler",
+            daemon=True,
+        ),
+    ]
+    for scheduler in schedulers:
+        scheduler.start()
+    try:
+        yield
+    finally:
+        stop_event.set()
+        for scheduler in schedulers:
+            scheduler.join(timeout=2)
+
+
+app = FastAPI(title="Stock Project API", version="1.0.2", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -384,8 +441,76 @@ def root():
 
 
 @app.get("/api/news")
-def news(market: str | None = None):
-    return get_news_markets(market)
+def news(symbol: str | None = None, limit: int = Query(50, ge=1, le=200)):
+    return get_news_articles(db_conn, symbol, limit)
+
+
+@app.post("/api/news/sync")
+def sync_news(limit: int = Query(200, ge=1, le=500)):
+    try:
+        return sync_news_articles(db_conn, limit)
+    except requests.RequestException as exc:
+        return {"received": 0, "synced": 0, "error": str(exc)}
+
+
+@app.get("/api/news/model-rankings")
+def model_rankings():
+    return get_model_rankings()
+
+
+@app.post("/api/news/model-rankings/refresh")
+def refresh_rankings():
+    refresh_result = refresh_model_rankings(force=True)
+    return {"refresh": refresh_result, "data": get_model_rankings()}
+
+
+def news_crawler_request(method: str, path: str, timeout: int = 10, **kwargs):
+    url = f"{os.getenv('NEWS_CRAWLER_URL', 'http://127.0.0.1:8010').rstrip('/')}{path}"
+    response = requests.request(method, url, timeout=timeout, **kwargs)
+    response.raise_for_status()
+    return response.json()
+
+
+@app.get("/api/news/admin/settings")
+def news_admin_settings():
+    return news_crawler_request("GET", "/v1/admin/settings")
+
+
+@app.put("/api/news/admin/settings")
+def update_news_admin_settings(payload: dict = Body(...)):
+    result = news_crawler_request("PUT", "/v1/admin/settings", json=payload)
+    if result.get("released_pending", 0):
+        result["sync"] = sync_news_articles(db_conn, 200)
+    return result
+
+
+@app.get("/api/news/admin/reviews")
+def news_admin_reviews(status: str | None = None, limit: int = Query(100, ge=1, le=500)):
+    return news_crawler_request(
+        "GET", "/v1/admin/reviews", params={"status": status, "limit": limit}
+    )
+
+
+@app.post("/api/news/admin/reviews/{article_id}/decision")
+def decide_news_review(article_id: int, payload: dict = Body(...)):
+    result = news_crawler_request(
+        "POST", f"/v1/admin/reviews/{article_id}/decision", json=payload
+    )
+    if payload.get("decision") == "approved":
+        result["sync"] = sync_news_articles(db_conn, 200)
+    return result
+
+
+@app.post("/api/news/admin/run")
+def run_news_pipeline():
+    crawl_result = news_crawler_request(
+        "POST",
+        "/v1/crawl",
+        timeout=180,
+        json={"symbols": ["1810.HK", "2513.HK"], "max_results": 5},
+    )
+    sync_result = sync_news_articles(db_conn, 200)
+    return {"crawl": crawl_result, "sync": sync_result}
 
 
 @app.get("/api/search")
